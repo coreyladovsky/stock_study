@@ -65,9 +65,39 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-document.addEventListener("DOMCon")
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lineGraph_js__ = __webpack_require__(1);
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchStock("ROBO").then(data => {
+    let stock = new __WEBPACK_IMPORTED_MODULE_0__lineGraph_js__["a" /* default */](data);
+  });
+});
+
+const fetchStock = async ticker => {
+  let data = await (await fetch(
+    `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
+  )).json();
+  return data;
+};
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class LineGraph {
+  constuctor(data) {
+    this.data = data;
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (LineGraph);
 
 
 /***/ })
