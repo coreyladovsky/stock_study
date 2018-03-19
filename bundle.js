@@ -69,14 +69,27 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lineGraph_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cleanData_js__ = __webpack_require__(2);
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetchStock("ROBO").then(data => {
-    let stock = new __WEBPACK_IMPORTED_MODULE_0__lineGraph_js__["a" /* default */](data);
-  });
+  defaultStocks();
 });
+
+const defaultStocks =  () => {
+  let defaults = ["ROBO", "XLK", "VGT", "FDN", "IYW"]
+  let promises = []
+  for (var i = 0; i < defaults.length; i++) {
+    promises.push(fetchStock(defaults[i]))
+  }
+  Promise.all(promises).then((results) => {
+    let stockData = results.map((res) => {
+      return Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["a" /* cleanerData */])(res)
+    })
+    debugger
+  })
+
+}
 
 const fetchStock = async ticker => {
   let data = await (await fetch(
@@ -87,17 +100,25 @@ const fetchStock = async ticker => {
 
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class LineGraph {
-  constuctor(data) {
-    this.data = data;
-  }
-}
+const cleanerData = data => {
+  let finalData = {
+    ticker: data["Meta Data"]["2. Symbol"],
+    dates: []
+  };
+  let obj = data["Time Series (Daily)"];
+  let lastSevenDates = Object.keys(obj).sort().slice(-7);
+  lastSevenDates.forEach((date) => {
+    finalData["dates"].push(Object.assign({}, obj[date], {date}));
+  });
+  return finalData;
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = cleanerData;
 
-/* harmony default export */ __webpack_exports__["a"] = (LineGraph);
 
 
 /***/ })

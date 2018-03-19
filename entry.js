@@ -1,10 +1,23 @@
-import LineGraph from "./lineGraph.js";
+import { cleanerData } from "./cleanData.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetchStock("ROBO").then(data => {
-    let stock = new LineGraph(data);
-  });
+  defaultStocks();
 });
+
+const defaultStocks =  () => {
+  let defaults = ["ROBO", "XLK", "VGT", "FDN", "IYW"]
+  let promises = []
+  for (var i = 0; i < defaults.length; i++) {
+    promises.push(fetchStock(defaults[i]))
+  }
+  Promise.all(promises).then((results) => {
+    let stockData = results.map((res) => {
+      return cleanerData(res)
+    })
+    debugger
+  })
+
+}
 
 const fetchStock = async ticker => {
   let data = await (await fetch(
