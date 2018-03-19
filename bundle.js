@@ -86,10 +86,103 @@ const defaultStocks =  () => {
     let stockData = results.map((res) => {
       return Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["a" /* cleanerData */])(res)
     })
-    debugger
-  })
+    const data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[0])
+    const margin = { top: 20, bottom: 100, left: 50, right: 10};
 
+    const width = 700 ;
+    const height = 500 ;
+    const color = d3.scaleOrdinal(d3.schemeCategory20);
+
+    const makeSvg = () => {
+      return  d3.select("#root").append("svg")
+      .attr("height", height + margin.left + margin.right)
+      .attr("width", width + margin.top + margin.bottom)
+      .attr("class", "svg-all-stocks")
+      .append("g")
+      .attr("tranform", "translate(" + (50 + margin.left) + "," +  margin.top + ")")
+    }
+
+    data.forEach(function(d) {
+      d.date = d.date;
+      d.close = +d.close;
+    })
+
+    console.log(data);
+
+    const x = d3.scaleTime().range([0, width])
+    // .domain(d3.extent(data, function(d) {return d.date}))
+
+    const y = d3.scaleLinear().rangeRound([0, height])
+    // .domain([0, d3.max(data, function(d) { return d.close; })])
+
+
+    var y2 = d3
+      .scaleLinear()
+      .rangeRound([0, height])
+      .domain([
+        d3.max(data, function(d) {
+          return d.close;
+        }),
+        0
+      ]);
+//
+
+    const drawLine = d3.line()
+        .x(function(d) {
+          return x(d.date)})
+        .y(function(d) { return y(d.close)})
+
+        x.domain(d3.extent(data, function(d) {return d.date}))
+        y.domain([0, d3.max(data, function(d) { return d.close; })])
+    // console.log(stockData);
+      let svg = makeSvg();
+
+
+      svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .attr("d", drawLine)
+        .attr("stroke", function(d) {
+        return color(d.ticker)
+        })
+        .attr("stroke-width", "2px")
+
+        svg.append("g")
+          .attr("class", "x-axis")
+          .attr("transform", "translate(50, " +  (height + 20) + ")")
+          .call(d3.axisBottom(x));
+
+        svg.append("g")
+        .attr("class", "y-axis")
+        .attr("transform", "translate(50," + margin.top + ")")
+          .call(d3.axisLeft(y2));
+
+
+      // makeG(svg)
+    //   .selectAll(".all-stocks")
+    //   .data(data)
+    //   .enter()
+    //   .append("path")
+    //   .attr("class", "all-stocks")
+    //   .attr("d", drawLine)
+    //   .attr("stroke", "blue")
+    //   .attr("stroke-width", "5")
+  })
 }
+
+
+
+
+
+const makeG = (svg) => {
+ return svg.append("g")
+ .attr("tranform", "translate(" + margin.left + "," +  margin.top + ")")
+ .attr("height", height)
+ .attr("width", width)
+}
+
+
+
 
 const fetchStock = async ticker => {
   let data = await (await fetch(
@@ -106,18 +199,24 @@ const fetchStock = async ticker => {
 
 "use strict";
 const cleanerData = data => {
-  let finalData = {
-    ticker: data["Meta Data"]["2. Symbol"],
-    dates: []
-  };
+  let finalData = [];
   let obj = data["Time Series (Daily)"];
   let lastSevenDates = Object.keys(obj).sort().slice(-7);
   lastSevenDates.forEach((date) => {
-    finalData["dates"].push(Object.assign({}, obj[date], {date}));
+    finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
   });
   return finalData;
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = cleanerData;
+
+
+
+const singleStock = array => {
+  return array.map((obj) => {
+    return { date: new Date(obj["date"]), close: obj["4. close"], ticker: obj["ticker"]};
+  });
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;
 
 
 
