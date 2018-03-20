@@ -110,11 +110,21 @@ const defaultStocks =  () => {
 
     console.log(data);
 
-    const x = d3.scaleTime().range([0, width])
-    .domain(d3.extent(data, function(d) {return d.date}))
+    // const x = d3.scaleTime().range([0, width])
+    // .domain(d3.extent(data, function(d) {return d.date}))
+
+    var x = d3
+    .scaleBand()
+    .rangeRound([0, width])
+    .padding(0.1)
+    .domain(
+      data.map(function(d) {
+        return d.date;
+      })
+    );
 
     const y = d3.scaleLinear()
-    .rangeRound([0, height])
+    .range([0, height])
     .domain([d3.min(data, function(d) { return d.close; }), d3.max(data, function(d) { return d.close; })])
 
 
@@ -130,10 +140,9 @@ const defaultStocks =  () => {
 //
 
     const drawLine = d3.line()
-        // .curve(d3.curveBasis)
         .x(function(d) {
           return x(d.date)})
-        .y(function(d) { return y(d.close)})
+        .y(function(d) { return height - y(d.close)})
 
         // x.domain(d3.extent(data, function(d) {return d.date}))
         // y.domain([0, d3.max(data, function(d) { return d.close; })])
@@ -165,18 +174,15 @@ const defaultStocks =  () => {
         .data([data])
         .attr("class", "line")
         .attr("d", drawLine)
-        .attr("transform", "translate(60," + margin.top + ")")
+        .attr("transform", "translate(40," + (margin.top) + ")")
         .attr("stroke", "blue")
-        .attr("strok-width", "2px")
+        .attr("stroke-width", "2px")
         .attr("fill", "none")
-      //   .attr("stroke", function(d) {
-      //   return color(d.ticker)
-      //   })
-      //   .attr("stroke-width", "2px")
+
       //
         g.append("g")
           .attr("class", "x-axis")
-          .attr("transform", "translate(50, " +  (height + margin.top) + ")")
+          .attr("transform", "translate(0, " +  (height + margin.top) + ")")
           .call(d3.axisBottom(x));
       //
         g.append("g")
@@ -240,7 +246,7 @@ const cleanerData = data => {
 
 const singleStock = array => {
   return array.map((obj) => {
-    return { date: new Date(obj["date"]), close: obj["4. close"], ticker: obj["ticker"]};
+    return { date: obj["date"].slice(5), close: obj["4. close"], ticker: obj["ticker"]};
   });
 };
 /* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;

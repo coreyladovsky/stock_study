@@ -11,6 +11,6 @@ export const cleanerData = data => {
 
 export const singleStock = array => {
   return array.map((obj) => {
-    return { date: new Date(obj["date"]), close: obj["4. close"], ticker: obj["ticker"]};
+    return { date: obj["date"].slice(5), close: obj["4. close"], ticker: obj["ticker"]};
   });
 };
