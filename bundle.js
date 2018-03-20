@@ -92,12 +92,13 @@ const defaultStocks =  () => {
 
     const width = 700 - margin.right - margin.left ;
     const height = 500 - margin.top - margin.bottom ;
-    const color = d3.scaleOrdinal(d3.schemeCategory20);
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
     data.forEach(function(d) {
       d.date = d.date;
       d.close = +d.close;
+      d.ticker = d.ticker;
     })
 
     const makeSvg = () => {
@@ -190,7 +191,8 @@ const defaultStocks =  () => {
         .attr("class", "line")
         .attr("d", drawLine)
         .attr("transform", "translate(40," + (margin.top) + ")")
-        .attr("stroke", "blue")
+        .attr("stroke", function(d) {
+           return color(d[0].ticker)})
         .attr("stroke-width", "2px")
         .attr("fill", "none")
 
