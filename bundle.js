@@ -86,7 +86,9 @@ const defaultStocks =  () => {
     let stockData = results.map((res) => {
       return Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["a" /* cleanerData */])(res)
     })
+    
     const data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[0])
+    const data2 = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[1])
 
     const margin = { top: 20, bottom: 100, left: 50, right: 10};
 
@@ -206,6 +208,16 @@ const defaultStocks =  () => {
         .attr("class", "y-axis")
         .attr("transform", "translate(50," + margin.top + ")")
           .call(d3.axisLeft(y2));
+
+        g.append("path")
+        .data([data2])
+        .attr("d", drawLine)
+        .attr("class", "line2")
+        .attr("transform", "translate(40," + (margin.top) + ")")
+        .attr("stroke", function(d) {
+           return color(d[0].ticker)})
+        .attr("stroke-width", "2px")
+        .attr("fill", "none")
 
 
       // makeG(svg)
