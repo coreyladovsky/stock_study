@@ -107,7 +107,7 @@ const defaultStocks = () => {
         .select("#root")
         .append("svg")
         .attr("height", height + margin.left + margin.right + 50)
-        .attr("width", width + margin.top + margin.bottom)
+        .attr("width", "100%")
         .attr("class", "svg-all-stocks");
     };
 
@@ -167,20 +167,8 @@ const defaultStocks = () => {
     let g = svg
       .append("g")
       .attr("tranform", "translate(" + 50 + "," + 10 + ")");
-
-    g
-      .append("path")
-      .data([data])
-      .attr("class", "line")
-      .attr("d", drawLine)
-      .attr("transform", "translate(40," + margin.top + ")")
-      .attr("stroke", function(d) {
-        return color(d[0].ticker);
-      })
-      .attr("stroke-width", "2px")
-      .attr("fill", "none");
-
     //
+
     g
       .append("g")
       .attr("class", "x-axis")
@@ -205,9 +193,44 @@ const defaultStocks = () => {
         })
         .attr("stroke-width", "2px")
         .attr("fill", "none");
+
+        var a = g
+          .append("g")
+          .attr("transform", function(d, i) {
+          return "translate(600," + 30 + ")";
+        });
+
+        a
+      .append("rect")
+      .data(data)
+      .attr("width", 15)
+      .attr("height", 15)
+      .attr("class", function(d) {
+        return d.ticker + " normal";
+      })
+      .style("fill", function(d) {
+        return color(d.ticker);
+      })
+
+
+    a
+      .append("text")
+      .data(data)
+      .attr("dy", ".8em")
+      .attr("x", 25)
+      .attr("fill", "black")
+      .attr("class", function(d) {
+        return d.ticker + " normal ";
+      })
+      .text(function(d) {
+        return d.ticker;
+      })
+
+
+
     };
 
-    for (var i = 1; i < stockData.length; i++) {
+    for (var i = 0; i < stockData.length; i++) {
       let data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[i]);
       makePath(g, data);
     }
