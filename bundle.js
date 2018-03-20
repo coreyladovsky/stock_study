@@ -87,6 +87,7 @@ const defaultStocks =  () => {
       return Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["a" /* cleanerData */])(res)
     })
     const data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[0])
+
     const margin = { top: 20, bottom: 100, left: 50, right: 10};
 
     const width = 700 - margin.right - margin.left ;
@@ -106,8 +107,25 @@ const defaultStocks =  () => {
       .attr("class", "svg-all-stocks")
     }
 
+    const maxAndMin = () => {
+      let max;
+      let min;
+      for (let i = 0; i < stockData.length; i++) {
+        for (var j = 0; j < stockData[i].length; j++) {
+          if(!min || parseInt(stockData[i][j]["4. close"]) < min) {
+            min = parseInt(stockData[i][j]["4. close"])
+          }
 
+          if(!max || parseInt(stockData[i][j]["4. close"]) > max) {
+            max = parseInt(stockData[i][j]["4. close"])
+          }
 
+        }
+      }
+      return [max, min]
+    }
+
+    var [max, min] = maxAndMin();
     console.log(data);
 
     // const x = d3.scaleTime().range([0, width])
@@ -125,17 +143,14 @@ const defaultStocks =  () => {
 
     const y = d3.scaleLinear()
     .range([0, height])
-    .domain([d3.min(data, function(d) { return d.close; }), d3.max(data, function(d) { return d.close; })])
+    .domain([min, max])
 
 
     var y2 = d3
       .scaleLinear()
       .rangeRound([0, height])
       .domain([
-        d3.max(data, function(d) {
-          return d.close;
-        }),
-        d3.min(data, function(d) { return d.close; })
+        max, min
       ]);
 //
 
