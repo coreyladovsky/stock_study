@@ -115,7 +115,7 @@ const defaultStocks =  () => {
 
     const y = d3.scaleLinear()
     .rangeRound([0, height])
-    .domain([0, d3.max(data, function(d) { return d.close; })])
+    .domain([d3.min(data, function(d) { return d.close; }), d3.max(data, function(d) { return d.close; })])
 
 
     var y2 = d3
@@ -125,11 +125,12 @@ const defaultStocks =  () => {
         d3.max(data, function(d) {
           return d.close;
         }),
-        0
+        d3.min(data, function(d) { return d.close; })
       ]);
 //
 
     const drawLine = d3.line()
+        // .curve(d3.curveBasis)
         .x(function(d) {
           return x(d.date)})
         .y(function(d) { return y(d.close)})
@@ -164,7 +165,7 @@ const defaultStocks =  () => {
         .data([data])
         .attr("class", "line")
         .attr("d", drawLine)
-        .attr("transform", "translate(50," + 0 + ")")
+        .attr("transform", "translate(60," + margin.top + ")")
         .attr("stroke", "blue")
         .attr("strok-width", "2px")
         .attr("fill", "none")
