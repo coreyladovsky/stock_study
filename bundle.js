@@ -89,31 +89,33 @@ const defaultStocks =  () => {
     const data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[0])
     const margin = { top: 20, bottom: 100, left: 50, right: 10};
 
-    const width = 700 ;
-    const height = 500 ;
+    const width = 700 - margin.right - margin.left ;
+    const height = 500 - margin.top - margin.bottom ;
     const color = d3.scaleOrdinal(d3.schemeCategory20);
 
-    const makeSvg = () => {
-      return  d3.select("#root").append("svg")
-      .attr("height", height + margin.left + margin.right)
-      .attr("width", width + margin.top + margin.bottom)
-      .attr("class", "svg-all-stocks")
-      .append("g")
-      .attr("tranform", "translate(" + (50 + margin.left) + "," +  margin.top + ")")
-    }
 
     data.forEach(function(d) {
       d.date = d.date;
       d.close = +d.close;
     })
 
+    const makeSvg = () => {
+      return  d3.select("#root").append("svg")
+      .attr("height", height + margin.left + margin.right)
+      .attr("width", width + margin.top + margin.bottom)
+      .attr("class", "svg-all-stocks")
+    }
+
+
+
     console.log(data);
 
     const x = d3.scaleTime().range([0, width])
-    // .domain(d3.extent(data, function(d) {return d.date}))
+    .domain(d3.extent(data, function(d) {return d.date}))
 
-    const y = d3.scaleLinear().rangeRound([0, height])
-    // .domain([0, d3.max(data, function(d) { return d.close; })])
+    const y = d3.scaleLinear()
+    .rangeRound([0, height])
+    .domain([0, d3.max(data, function(d) { return d.close; })])
 
 
     var y2 = d3
@@ -132,27 +134,51 @@ const defaultStocks =  () => {
           return x(d.date)})
         .y(function(d) { return y(d.close)})
 
-        x.domain(d3.extent(data, function(d) {return d.date}))
-        y.domain([0, d3.max(data, function(d) { return d.close; })])
+        // x.domain(d3.extent(data, function(d) {return d.date}))
+        // y.domain([0, d3.max(data, function(d) { return d.close; })])
     // console.log(stockData);
       let svg = makeSvg();
 
+      let g = svg.append("g")
+      .attr("tranform", "translate(" + (50) + "," +  10 + ")")
 
-      svg.append("path")
+  //     g
+  // .selectAll("path")
+  // .data(data)
+  // .enter()
+  // .append("path")
+  // .attr("class", "bar")
+  // .attr("x", function(d) {
+  //   return x(d.date);
+  // })
+  // .attr("y", function(d) {
+  //   return 425 - y(d.close);
+  // })
+  // .attr("width", x.bandwidth())
+  // .attr("height", function(d) {
+  //   return y(d.close);
+  // })
+  // .attr("fill", "blue");
+
+      g.append("path")
         .data([data])
         .attr("class", "line")
         .attr("d", drawLine)
-        .attr("stroke", function(d) {
-        return color(d.ticker)
-        })
-        .attr("stroke-width", "2px")
-
-        svg.append("g")
+        .attr("transform", "translate(50," + 0 + ")")
+        .attr("stroke", "blue")
+        .attr("strok-width", "2px")
+        .attr("fill", "none")
+      //   .attr("stroke", function(d) {
+      //   return color(d.ticker)
+      //   })
+      //   .attr("stroke-width", "2px")
+      //
+        g.append("g")
           .attr("class", "x-axis")
-          .attr("transform", "translate(50, " +  (height + 20) + ")")
+          .attr("transform", "translate(50, " +  (height + margin.top) + ")")
           .call(d3.axisBottom(x));
-
-        svg.append("g")
+      //
+        g.append("g")
         .attr("class", "y-axis")
         .attr("transform", "translate(50," + margin.top + ")")
           .call(d3.axisLeft(y2));
