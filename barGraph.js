@@ -116,7 +116,7 @@ export const changePage = (stockData, ticker) => {
       .attr("class", "bar")
       .attr("x", function(d) {
         // debugger
-        return x(d.date) + idx * 10;
+        return x(d.date) + (idx * 15) + 11;
       })
       .attr("y", function(d) {
         return 425 - y(d.number);
