@@ -27,7 +27,6 @@ const defaultStocks = () => {
 
     data.forEach(function(d) {
       d.date = d.date;
-      d.close = +d.close;
       d.ticker = d.ticker;
     });
 
