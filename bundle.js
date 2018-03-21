@@ -181,7 +181,7 @@ const defaultStocks = () => {
       .attr("transform", "translate(50," + margin.top + ")")
       .call(d3.axisLeft(y2));
 
-    const makePath = (g, data) => {
+    const makePath = (g, i, data) => {
       g
         .append("path")
         .data([data])
@@ -196,8 +196,8 @@ const defaultStocks = () => {
 
         var a = g
           .append("g")
-          .attr("transform", function(d, i) {
-          return "translate(600," + 30 + ")";
+          .attr("transform", function(d) {
+          return "translate(700," + (100 + (30 * i)) + ")";
         });
 
         a
@@ -232,7 +232,7 @@ const defaultStocks = () => {
 
     for (var i = 0; i < stockData.length; i++) {
       let data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[i]);
-      makePath(g, data);
+      makePath(g, i, data);
     }
 
   });
