@@ -41,7 +41,7 @@ const defaultStocks = () => {
         .attr("class", className);
     };
 
-      let svg2 = makeSvg("svg-single-stock", "#root2");
+      // let svg2 = makeSvg("svg-single-stock", "#root2");
 
     const maxAndMin = () => {
       let max;
@@ -156,7 +156,7 @@ const defaultStocks = () => {
           return d.ticker;
         })
         .on("click", function(d) {
-          changePage(stockData, svg2, d.ticker);
+          changePage(stockData, "svg2", d.ticker);
         });
     };
 

@@ -114,7 +114,7 @@ const defaultStocks = () => {
         .attr("class", className);
     };
 
-      let svg2 = makeSvg("svg-single-stock", "#root2");
+      // let svg2 = makeSvg("svg-single-stock", "#root2");
 
     const maxAndMin = () => {
       let max;
@@ -229,7 +229,7 @@ const defaultStocks = () => {
           return d.ticker;
         })
         .on("click", function(d) {
-          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, svg2, d.ticker);
+          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, "svg2", d.ticker);
         });
     };
 
@@ -290,11 +290,12 @@ const singleStock = array => {
 
 "use strict";
 const hideModal = () => {
+  d3.selectAll(".svg-single-stock").remove();
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
 };
 
-const changePage = (stockData, svg, ticker) => {
+const changePage = (stockData, text, ticker) => {
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "block";
   let open = [];
@@ -349,6 +350,15 @@ const changePage = (stockData, svg, ticker) => {
   let width = 700 - margin.right - margin.left;
   let height = 525 - margin.top - margin.bottom;
   let color = d3.scaleOrdinal(d3.schemeCategory10);
+
+
+let svg = d3
+  .select("#root2")
+  .append("svg")
+  .attr("height", height + margin.left + margin.right + 50)
+  .attr("width", "100%")
+  .attr("class", "svg-single-stock");
+
 
   svg
     .on("click", hideModal);
