@@ -286,7 +286,15 @@ const singleStock = array => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+const hideModal = () => {
+  let modal = document.getElementById("root2");
+  modal.style.display = "none";
+};
+
+
 const changePage = (stockData, ticker) => {
+  let modal = document.getElementById("root2");
+  modal.style.display = "block";
   let singleStockData = [];
   for (let i = 0; i < stockData.length; i++) {
     for (var j = 0; j < stockData[i].length; j++) {
@@ -303,7 +311,8 @@ const changePage = (stockData, ticker) => {
    .append("svg")
    .attr("height", "100%")
    .attr("width", "100%")
-   .attr("class", "svg-single-stock");
+   .attr("class", "svg-single-stock")
+   .on("click", hideModal);
 
 
 
