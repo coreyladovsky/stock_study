@@ -1,10 +1,12 @@
+import { makeSvg, color2 } from "./util/d3_methods.js";
+
 const hideModal = () => {
   d3.selectAll(".svg-single-stock").remove();
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
 };
 
-export const changePage = (stockData, text, ticker) => {
+export const changePage = (stockData, ticker) => {
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "block";
   let open = [];
@@ -61,12 +63,7 @@ export const changePage = (stockData, text, ticker) => {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-let svg = d3
-  .select("#root2")
-  .append("svg")
-  .attr("height", height + margin.left + margin.right + 50)
-  .attr("width", "100%")
-  .attr("class", "svg-single-stock");
+let svg = makeSvg("svg-single-stock", "#root2", margin, height, (width + 200))
 
 
   svg
@@ -109,7 +106,7 @@ let svg = d3
       .attr("y", function(d) {
         return 425 - y(d.number);
       })
-      .attr("fill", color(idx))
+      .attr("fill", color2(idx))
       .attr("width", 15)
       .attr("height", function(d) {
         return y(d.number);
@@ -127,7 +124,7 @@ let svg = d3
               .attr("width", 15)
               .attr("height", 15)
               .style("fill", function(d) {
-                return color(idx);
+                return color2(idx);
               });
 
             a

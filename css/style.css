@@ -24,7 +24,7 @@ text {
 
 .link-list {
   list-style: none;
-  bottom: 0px;
+  bottom: 15px;
   display: flex;
   right: 0px;
   position: absolute;
@@ -54,9 +54,14 @@ text {
   /* background: black; */
 }
 
+.svg-single-stock:hover {
+  cursor: pointer;
+}
+
 .svg-single-stock {
   background: white;
   margin: auto;
+  margin-top: 40px;
 }
 
 #root2 {

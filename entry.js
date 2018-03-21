@@ -1,12 +1,13 @@
-import { cleanerData, singleStock } from "./cleanData.js";
+import { cleanerData, singleStock } from "./util/cleanData.js";
 import { changePage } from "./barGraph.js";
+import { fetchStock } from "./util/fetch.js";
+import { makeSvg, margin, width, height, color } from "./util/d3_methods.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   defaultStocks();
 });
 
 const defaultStocks = () => {
-  // let defaults = ["ROBO", "XLK", "VGT", "FDN", "IYW"]
   let defaults = ["CHFS", "SLS", "NFEC", "MRNS", "NOG"];
   let promises = [];
   for (let i = 0; i < defaults.length; i++) {
@@ -19,29 +20,17 @@ const defaultStocks = () => {
 
     const data = singleStock(stockData[0]);
 
-    const margin = { top: 30, bottom: 50, left: 50, right: 10 };
+    // const margin = { top: 30, bottom: 50, left: 50, right: 10 };
 
-    const width = 700 - margin.right - margin.left;
-    const height = 500 - margin.top - margin.bottom;
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    // const width = 700 - margin.right - margin.left;
+    // const height = 500 - margin.top - margin.bottom;
+    // const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     data.forEach(function(d) {
       d.date = d.date;
       d.ticker = d.ticker;
     });
 
-
-
-    const makeSvg = (className, rootId) => {
-      return d3
-        .select(rootId)
-        .append("svg")
-        .attr("height", height + margin.left + margin.right + 50)
-        .attr("width", "100%")
-        .attr("class", className);
-    };
-
-      // let svg2 = makeSvg("svg-single-stock", "#root2");
 
     const maxAndMin = () => {
       let max;
@@ -95,7 +84,7 @@ const defaultStocks = () => {
         return height + margin.top - y(d.close);
       });
 
-    let svg = makeSvg("svg-all-stocks", "#root");
+    let svg = makeSvg("svg-all-stocks", "#root", margin, height, "100%");
 
     let g = svg
       .append("g")
@@ -156,7 +145,7 @@ const defaultStocks = () => {
           return d.ticker;
         })
         .on("click", function(d) {
-          changePage(stockData, "svg2", d.ticker);
+          changePage(stockData, d.ticker);
         });
     };
 
@@ -173,11 +162,4 @@ const makeG = svg => {
     .attr("tranform", "translate(" + margin.left + "," + margin.top + ")")
     .attr("height", height)
     .attr("width", width);
-};
-
-const fetchStock = async ticker => {
-  let data = await (await fetch(
-    `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
-  )).json();
-  return data;
 };

@@ -69,8 +69,12 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cleanData_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__barGraph_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_fetch_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__ = __webpack_require__(6);
+
+
 
 
 
@@ -79,42 +83,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const defaultStocks = () => {
-  // let defaults = ["ROBO", "XLK", "VGT", "FDN", "IYW"]
   let defaults = ["CHFS", "SLS", "NFEC", "MRNS", "NOG"];
   let promises = [];
   for (let i = 0; i < defaults.length; i++) {
-    promises.push(fetchStock(defaults[i]));
+    promises.push(Object(__WEBPACK_IMPORTED_MODULE_2__util_fetch_js__["a" /* fetchStock */])(defaults[i]));
   }
   Promise.all(promises).then(results => {
     var stockData = results.map(res => {
-      return Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["a" /* cleanerData */])(res);
+      return Object(__WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__["a" /* cleanerData */])(res);
     });
 
-    const data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[0]);
+    const data = Object(__WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__["b" /* singleStock */])(stockData[0]);
 
-    const margin = { top: 30, bottom: 50, left: 50, right: 10 };
+    // const margin = { top: 30, bottom: 50, left: 50, right: 10 };
 
-    const width = 700 - margin.right - margin.left;
-    const height = 500 - margin.top - margin.bottom;
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    // const width = 700 - margin.right - margin.left;
+    // const height = 500 - margin.top - margin.bottom;
+    // const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     data.forEach(function(d) {
       d.date = d.date;
       d.ticker = d.ticker;
     });
 
-
-
-    const makeSvg = (className, rootId) => {
-      return d3
-        .select(rootId)
-        .append("svg")
-        .attr("height", height + margin.left + margin.right + 50)
-        .attr("width", "100%")
-        .attr("class", className);
-    };
-
-      // let svg2 = makeSvg("svg-single-stock", "#root2");
 
     const maxAndMin = () => {
       let max;
@@ -139,7 +130,7 @@ const defaultStocks = () => {
 
     var x = d3
       .scaleBand()
-      .rangeRound([0, width])
+      .rangeRound([0, __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]])
       .padding(0.1)
       .domain(
         data.map(function(d) {
@@ -149,12 +140,12 @@ const defaultStocks = () => {
 
     const y = d3
       .scaleLinear()
-      .range([0, height])
+      .range([0, __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */]])
       .domain([0, max]);
 
     var y2 = d3
       .scaleLinear()
-      .rangeRound([0, height])
+      .rangeRound([0, __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */]])
       .domain([max, 0]);
     //
 
@@ -165,10 +156,10 @@ const defaultStocks = () => {
         return x(d.date);
       })
       .y(function(d) {
-        return height + margin.top - y(d.close);
+        return __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top - y(d.close);
       });
 
-    let svg = makeSvg("svg-all-stocks", "#root");
+    let svg = Object(__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["d" /* makeSvg */])("svg-all-stocks", "#root", __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */], __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */], "100%");
 
     let g = svg
       .append("g")
@@ -178,13 +169,13 @@ const defaultStocks = () => {
     g
       .append("g")
       .attr("class", "x-axis")
-      .attr("transform", "translate(0, " + (height + margin.top) + ")")
+      .attr("transform", "translate(0, " + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top) + ")")
       .call(d3.axisBottom(x));
     //
     g
       .append("g")
       .attr("class", "y-axis")
-      .attr("transform", "translate(50," + margin.top + ")")
+      .attr("transform", "translate(50," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
       .call(d3.axisLeft(y2));
 
     const makePath = (stockData, g, i, data) => {
@@ -193,9 +184,9 @@ const defaultStocks = () => {
         .data([data])
         .attr("d", drawLine)
         .attr("class", "line2")
-        .attr("transform", "translate(40," + margin.top + ")")
+        .attr("transform", "translate(40," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
         .attr("stroke", function(d) {
-          return color(d[0].ticker);
+          return Object(__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["a" /* color */])(d[0].ticker);
         })
         .attr("stroke-width", "2px")
         .attr("fill", "none");
@@ -213,7 +204,7 @@ const defaultStocks = () => {
           return d.ticker + " normal";
         })
         .style("fill", function(d) {
-          return color(d.ticker);
+          return Object(__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["a" /* color */])(d.ticker);
         });
 
       a
@@ -229,12 +220,12 @@ const defaultStocks = () => {
           return d.ticker;
         })
         .on("click", function(d) {
-          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, "svg2", d.ticker);
+          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, d.ticker);
         });
     };
 
     for (var i = 0; i < stockData.length; i++) {
-      let data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[i]);
+      let data = Object(__WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__["b" /* singleStock */])(stockData[i]);
       makePath(stockData, g, i, data);
     }
   });
@@ -243,59 +234,29 @@ const defaultStocks = () => {
 const makeG = svg => {
   return svg
     .append("g")
-    .attr("tranform", "translate(" + margin.left + "," + margin.top + ")")
-    .attr("height", height)
-    .attr("width", width);
-};
-
-const fetchStock = async ticker => {
-  let data = await (await fetch(
-    `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
-  )).json();
-  return data;
+    .attr("tranform", "translate(" + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].left + "," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
+    .attr("height", __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */])
+    .attr("width", __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]);
 };
 
 
 /***/ }),
 /* 1 */,
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const cleanerData = data => {
-  let finalData = [];
-  let obj = data["Time Series (Daily)"];
-  let lastSevenDates = Object.keys(obj).sort().slice(-7);
-  lastSevenDates.forEach((date) => {
-    finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
-  });
-  return finalData;
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = cleanerData;
-
-
-
-const singleStock = array => {
-  return array.map((obj) => {
-    return { date: obj["date"].slice(5), close: obj["4. close"], ticker: obj["ticker"]};
-  });
-};
-/* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;
-
-
-
-/***/ }),
+/* 2 */,
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__ = __webpack_require__(6);
+
+
 const hideModal = () => {
   d3.selectAll(".svg-single-stock").remove();
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
 };
 
-const changePage = (stockData, text, ticker) => {
+const changePage = (stockData, ticker) => {
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "block";
   let open = [];
@@ -352,12 +313,7 @@ const changePage = (stockData, text, ticker) => {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-let svg = d3
-  .select("#root2")
-  .append("svg")
-  .attr("height", height + margin.left + margin.right + 50)
-  .attr("width", "100%")
-  .attr("class", "svg-single-stock");
+let svg = Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["d" /* makeSvg */])("svg-single-stock", "#root2", margin, height, (width + 200))
 
 
   svg
@@ -400,7 +356,7 @@ let svg = d3
       .attr("y", function(d) {
         return 425 - y(d.number);
       })
-      .attr("fill", color(idx))
+      .attr("fill", Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["b" /* color2 */])(idx))
       .attr("width", 15)
       .attr("height", function(d) {
         return y(d.number);
@@ -418,7 +374,7 @@ let svg = d3
               .attr("width", 15)
               .attr("height", 15)
               .style("fill", function(d) {
-                return color(idx);
+                return Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["b" /* color2 */])(idx);
               });
 
             a
@@ -451,6 +407,84 @@ let svg = d3
     .call(d3.axisLeft(y2));
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = changePage;
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const cleanerData = data => {
+  let finalData = [];
+  let obj = data["Time Series (Daily)"];
+  let lastSevenDates = Object.keys(obj).sort().slice(-7);
+  lastSevenDates.forEach((date) => {
+    finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
+  });
+  return finalData;
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = cleanerData;
+
+
+
+const singleStock = array => {
+  return array.map((obj) => {
+    return { date: obj["date"].slice(5), close: obj["4. close"], ticker: obj["ticker"]};
+  });
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;
+
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const fetchStock = async ticker => {
+  let data = await (await fetch(
+    `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
+  )).json();
+  return data;
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = fetchStock;
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const margin = { top: 30, bottom: 50, left: 50, right: 10 };
+/* harmony export (immutable) */ __webpack_exports__["e"] = margin;
+
+
+const width = 700 - margin.right - margin.left;
+/* harmony export (immutable) */ __webpack_exports__["f"] = width;
+
+const height = 500 - margin.top - margin.bottom;
+/* harmony export (immutable) */ __webpack_exports__["c"] = height;
+
+const color = d3.scaleOrdinal(d3.schemeCategory10);
+/* harmony export (immutable) */ __webpack_exports__["a"] = color;
+
+const color2 = d3.scaleOrdinal(d3.schemeCategory10);
+/* harmony export (immutable) */ __webpack_exports__["b"] = color2;
+
+
+
+
+const makeSvg = (className, rootId, obj, h, w) => {
+  return d3
+    .select(rootId)
+    .append("svg")
+    .attr("height", h + obj.left + obj.right + 50)
+    .attr("width", w)
+    .attr("class", className);
+};
+/* harmony export (immutable) */ __webpack_exports__["d"] = makeSvg;
 
 
 
