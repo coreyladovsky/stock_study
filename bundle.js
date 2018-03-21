@@ -82,7 +82,7 @@ const defaultStocks = () => {
   // let defaults = ["ROBO", "XLK", "VGT", "FDN", "IYW"]
   let defaults = ["CHFS", "SLS", "NFEC", "MRNS", "NOG"];
   let promises = [];
-  for (var i = 0; i < defaults.length; i++) {
+  for (let i = 0; i < defaults.length; i++) {
     promises.push(fetchStock(defaults[i]));
   }
   Promise.all(promises).then(results => {
@@ -103,14 +103,18 @@ const defaultStocks = () => {
       d.ticker = d.ticker;
     });
 
-    const makeSvg = className => {
+
+
+    const makeSvg = (className, rootId) => {
       return d3
-        .select("#root")
+        .select(rootId)
         .append("svg")
         .attr("height", height + margin.left + margin.right + 50)
         .attr("width", "100%")
         .attr("class", className);
     };
+
+      let svg2 = makeSvg("svg-single-stock", "#root2");
 
     const maxAndMin = () => {
       let max;
@@ -164,7 +168,7 @@ const defaultStocks = () => {
         return height + margin.top - y(d.close);
       });
 
-    let svg = makeSvg("svg-all-stocks");
+    let svg = makeSvg("svg-all-stocks", "#root");
 
     let g = svg
       .append("g")
@@ -225,7 +229,7 @@ const defaultStocks = () => {
           return d.ticker;
         })
         .on("click", function(d) {
-          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, d.ticker);
+          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, svg2, d.ticker);
         });
     };
 
@@ -290,7 +294,7 @@ const hideModal = () => {
   modal.style.display = "none";
 };
 
-const changePage = (stockData, ticker) => {
+const changePage = (stockData, svg, ticker) => {
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "block";
   let open = [];
@@ -336,11 +340,6 @@ const changePage = (stockData, ticker) => {
   let data = open;
 
   data.forEach(function(d) {
-    // d.date = d.date.slice(5);
-    // d.close = +d["4. close"];
-    // d.open = +d["1. open"];
-    // d.low = +d["3. low"];
-    // d.high = +d["2. high"];
     d.number = +d.number;
     d.word = d.word;
     d.date = d.date;
@@ -351,12 +350,7 @@ const changePage = (stockData, ticker) => {
   let height = 525 - margin.top - margin.bottom;
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  let svg = d3
-    .select("#root2")
-    .append("svg")
-    .attr("height", 700)
-    .attr("width", 900)
-    .attr("class", "svg-single-stock")
+  svg
     .on("click", hideModal);
 
   let g = svg.append("g").attr("transform", "translate(" + 50 + "," + 10 + ")");
@@ -382,17 +376,6 @@ const changePage = (stockData, ticker) => {
     .domain([max, 0]);
 
   const drawBar = (g, data, idx) => {
-    //
-    // data.forEach(function(d) {
-    //   // d.date = d.date.slice(5);
-    //   // d.close = +d["4. close"];
-    //   // d.open = +d["1. open"];
-    //   // d.low = +d["3. low"];
-    //   // d.high = +d["2. high"];
-    //   d.number = +d.number;
-    //   d.word = d.word;
-    //   d.date = d.date.slice(5);
-    // });
 
     g
       .append("g")
@@ -402,7 +385,6 @@ const changePage = (stockData, ticker) => {
       .append("rect")
       .attr("class", "bar")
       .attr("x", function(d) {
-        // debugger
         return x(d.date) + (idx * 15) + 11;
       })
       .attr("y", function(d) {
@@ -425,9 +407,6 @@ const changePage = (stockData, ticker) => {
               .data(data)
               .attr("width", 15)
               .attr("height", 15)
-              .attr("class", function(d) {
-                return d.word + " normal";
-              })
               .style("fill", function(d) {
                 return color(idx);
               });
@@ -438,9 +417,6 @@ const changePage = (stockData, ticker) => {
               .attr("dy", ".8em")
               .attr("x", 25)
               .attr("fill", "black")
-              .attr("class", function(d) {
-                return d.word + " normal ";
-              })
               .text(function(d) {
                 return d.word;
               })

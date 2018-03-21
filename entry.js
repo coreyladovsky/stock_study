@@ -9,7 +9,7 @@ const defaultStocks = () => {
   // let defaults = ["ROBO", "XLK", "VGT", "FDN", "IYW"]
   let defaults = ["CHFS", "SLS", "NFEC", "MRNS", "NOG"];
   let promises = [];
-  for (var i = 0; i < defaults.length; i++) {
+  for (let i = 0; i < defaults.length; i++) {
     promises.push(fetchStock(defaults[i]));
   }
   Promise.all(promises).then(results => {
@@ -30,14 +30,18 @@ const defaultStocks = () => {
       d.ticker = d.ticker;
     });
 
-    const makeSvg = className => {
+
+
+    const makeSvg = (className, rootId) => {
       return d3
-        .select("#root")
+        .select(rootId)
         .append("svg")
         .attr("height", height + margin.left + margin.right + 50)
         .attr("width", "100%")
         .attr("class", className);
     };
+
+      let svg2 = makeSvg("svg-single-stock", "#root2");
 
     const maxAndMin = () => {
       let max;
@@ -91,7 +95,7 @@ const defaultStocks = () => {
         return height + margin.top - y(d.close);
       });
 
-    let svg = makeSvg("svg-all-stocks");
+    let svg = makeSvg("svg-all-stocks", "#root");
 
     let g = svg
       .append("g")
@@ -152,7 +156,7 @@ const defaultStocks = () => {
           return d.ticker;
         })
         .on("click", function(d) {
-          changePage(stockData, d.ticker);
+          changePage(stockData, svg2, d.ticker);
         });
     };
 

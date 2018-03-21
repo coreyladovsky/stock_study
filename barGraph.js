@@ -3,7 +3,7 @@ const hideModal = () => {
   modal.style.display = "none";
 };
 
-export const changePage = (stockData, ticker) => {
+export const changePage = (stockData, svg, ticker) => {
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "block";
   let open = [];
@@ -49,11 +49,6 @@ export const changePage = (stockData, ticker) => {
   let data = open;
 
   data.forEach(function(d) {
-    // d.date = d.date.slice(5);
-    // d.close = +d["4. close"];
-    // d.open = +d["1. open"];
-    // d.low = +d["3. low"];
-    // d.high = +d["2. high"];
     d.number = +d.number;
     d.word = d.word;
     d.date = d.date;
@@ -64,12 +59,7 @@ export const changePage = (stockData, ticker) => {
   let height = 525 - margin.top - margin.bottom;
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  let svg = d3
-    .select("#root2")
-    .append("svg")
-    .attr("height", 700)
-    .attr("width", 900)
-    .attr("class", "svg-single-stock")
+  svg
     .on("click", hideModal);
 
   let g = svg.append("g").attr("transform", "translate(" + 50 + "," + 10 + ")");
@@ -95,17 +85,6 @@ export const changePage = (stockData, ticker) => {
     .domain([max, 0]);
 
   const drawBar = (g, data, idx) => {
-    //
-    // data.forEach(function(d) {
-    //   // d.date = d.date.slice(5);
-    //   // d.close = +d["4. close"];
-    //   // d.open = +d["1. open"];
-    //   // d.low = +d["3. low"];
-    //   // d.high = +d["2. high"];
-    //   d.number = +d.number;
-    //   d.word = d.word;
-    //   d.date = d.date.slice(5);
-    // });
 
     g
       .append("g")
@@ -115,7 +94,6 @@ export const changePage = (stockData, ticker) => {
       .append("rect")
       .attr("class", "bar")
       .attr("x", function(d) {
-        // debugger
         return x(d.date) + (idx * 15) + 11;
       })
       .attr("y", function(d) {
@@ -138,9 +116,6 @@ export const changePage = (stockData, ticker) => {
               .data(data)
               .attr("width", 15)
               .attr("height", 15)
-              .attr("class", function(d) {
-                return d.word + " normal";
-              })
               .style("fill", function(d) {
                 return color(idx);
               });
@@ -151,9 +126,6 @@ export const changePage = (stockData, ticker) => {
               .attr("dy", ".8em")
               .attr("x", 25)
               .attr("fill", "black")
-              .attr("class", function(d) {
-                return d.word + " normal ";
-              })
               .text(function(d) {
                 return d.word;
               })
