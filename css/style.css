@@ -1,0 +1,42 @@
+.heading-container {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+.normal:hover {
+  text-decoration: underline;
+  cursor: pointer
+}
+
+.title {
+  font-size: 55px;
+  font-weight: bold;
+}
+
+.name {
+  font-size: 22px;
+}
+
+.link-list {
+  list-style: none;
+  bottom: 0px;
+  display: flex;
+  right: 0px;
+  position: absolute;
+}
+
+.githublink, .linked-in-link {
+  color: black;
+  margin-right: 20px;
+  font-size: 35px;
+}
+
+.five-stock-container {
+  width: 1000px;
+  margin: auto;
+}
