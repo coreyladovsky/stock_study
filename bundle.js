@@ -413,6 +413,38 @@ const changePage = (stockData, ticker) => {
       .attr("height", function(d) {
         return y(d.number);
       });
+
+
+
+            let a = g.append("g").attr("transform", function(d) {
+              return "translate(700," + (100 + 30 * idx) + ")";
+            });
+
+            a
+              .append("rect")
+              .data(data)
+              .attr("width", 15)
+              .attr("height", 15)
+              .attr("class", function(d) {
+                return d.word + " normal";
+              })
+              .style("fill", function(d) {
+                return color(idx);
+              });
+
+            a
+              .append("text")
+              .data(data)
+              .attr("dy", ".8em")
+              .attr("x", 25)
+              .attr("fill", "black")
+              .attr("class", function(d) {
+                return d.word + " normal ";
+              })
+              .text(function(d) {
+                return d.word;
+              })
+
   };
 
   for (let idx = 0; idx < allData.length; idx++) {
