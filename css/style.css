@@ -43,17 +43,26 @@ text {
 
 /* SINGLE STOCK */
 
-.svg-single-stock {
-  position: absolute;
+#single-stock-container {
+  position: fixed;
   top: 0;
   left: 0;
-  /* background-image: url("../images/transpBlack75.png"); */
+  bottom: 0;
+  right: 0;
+  background-image: url("../images/transpBlack75.png");
+  display: none;
   /* background: black; */
 }
 
-/* #root2 {
-  display: none;
-} */
+.svg-single-stock {
+  background: white;
+  margin: auto;
+}
+
+#root2 {
+  display: flex;
+  justify-content: center;
+}
 
 /* g {
   background:

@@ -1,26 +1,59 @@
 const hideModal = () => {
-  let modal = document.getElementById("root2");
+  let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
 };
 
 export const changePage = (stockData, ticker) => {
-  let modal = document.getElementById("root2");
+  let modal = document.getElementById("single-stock-container");
   modal.style.display = "block";
-  let singleStockData = [];
+  let open = [];
+  let close = [];
+  let high = [];
+  let low = [];
   for (let i = 0; i < stockData.length; i++) {
     for (var j = 0; j < stockData[i].length; j++) {
       if (stockData[i][j].ticker === ticker) {
-        singleStockData.push(stockData[i][j]);
+        open.push(
+          {number: stockData[i][j]["1. open"],
+            date: stockData[i][j].date,
+            word: "Open"}
+        );
+        close.push(
+          {number: stockData[i][j]["4. close"],
+            date: stockData[i][j].date,
+            word: "Close"}
+        );
+        high.push(
+          {number: stockData[i][j]["2. high"],
+            date: stockData[i][j].date,
+            word: "High"}
+        );
+        low.push(
+          {number: stockData[i][j]["3. low"],
+            date: stockData[i][j].date,
+            word: "Low"}
+        );
       }
     }
   }
-  let data = singleStockData;
+
+  let max;
+  for (var i = 0; i < high.length; i++) {
+    if(!max || parseFloat(high[i].number) > max) {
+      max = parseFloat(high[i].number);
+    }
+  }
+  let data = open;
+
   data.forEach(function(d) {
+    // d.date = d.date.slice(5);
+    // d.close = +d["4. close"];
+    // d.open = +d["1. open"];
+    // d.low = +d["3. low"];
+    // d.high = +d["2. high"];
+    d.number = +d.number;
+    d.word = d.word;
     d.date = d.date.slice(5);
-    d.close = +d["4. close"];
-    d.open = +d["1. open"];
-    d.low = +d["3. low"];
-    d.high = +d["2. high"];
   });
 
   let margin = { top: 20, right: 10, bottom: 100, left: 40 };
@@ -31,8 +64,8 @@ export const changePage = (stockData, ticker) => {
   let svg = d3
     .select("#root2")
     .append("svg")
-    .attr("height", "100%")
-    .attr("width", "100%")
+    .attr("height", 700)
+    .attr("width", 900)
     .attr("class", "svg-single-stock")
     .on("click", hideModal);
 
@@ -53,18 +86,14 @@ export const changePage = (stockData, ticker) => {
     .rangeRound([0, height])
     .domain([
       0,
-      d3.max(data, function(d) {
-        return d.open;
-      })
+      max
     ]);
 
   let y2 = d3
     .scaleLinear()
     .rangeRound([0, height])
     .domain([
-      d3.max(data, function(d) {
-        return d.high;
-      }),
+      max,
       0
     ]);
 
@@ -78,13 +107,13 @@ export const changePage = (stockData, ticker) => {
       return x(d.date);
     })
     .attr("y", function(d) {
-      return 425 - y(d.open);
+      return 425 - y(d.number);
     })
     .attr("fill", function(d) {
-      return color(d.open);
+      return color(d.word);
     })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return y(d.open); });
+    .attr("width", 15)
+    .attr("height", function(d) { return y(d.number); });
 
   g
     .append("g")
