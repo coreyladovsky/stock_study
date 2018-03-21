@@ -70,6 +70,8 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cleanData_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__barGraph_js__ = __webpack_require__(3);
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -84,7 +86,7 @@ const defaultStocks = () => {
     promises.push(fetchStock(defaults[i]));
   }
   Promise.all(promises).then(results => {
-    let stockData = results.map(res => {
+    var stockData = results.map(res => {
       return Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["a" /* cleanerData */])(res);
     });
 
@@ -102,13 +104,13 @@ const defaultStocks = () => {
       d.ticker = d.ticker;
     });
 
-    const makeSvg = () => {
+    const makeSvg = className => {
       return d3
         .select("#root")
         .append("svg")
         .attr("height", height + margin.left + margin.right + 50)
         .attr("width", "100%")
-        .attr("class", "svg-all-stocks");
+        .attr("class", className);
     };
 
     const maxAndMin = () => {
@@ -129,6 +131,8 @@ const defaultStocks = () => {
     };
 
     var [max, min] = maxAndMin();
+
+
 
     var x = d3
       .scaleBand()
@@ -161,8 +165,7 @@ const defaultStocks = () => {
         return height + margin.top - y(d.close);
       });
 
-
-    let svg = makeSvg();
+    let svg = makeSvg("svg-all-stocks");
 
     let g = svg
       .append("g")
@@ -181,7 +184,7 @@ const defaultStocks = () => {
       .attr("transform", "translate(50," + margin.top + ")")
       .call(d3.axisLeft(y2));
 
-    const makePath = (g, i, data) => {
+    const makePath = (stockData, g, i, data) => {
       g
         .append("path")
         .data([data])
@@ -194,47 +197,43 @@ const defaultStocks = () => {
         .attr("stroke-width", "2px")
         .attr("fill", "none");
 
-        var a = g
-          .append("g")
-          .attr("transform", function(d) {
-          return "translate(700," + (100 + (30 * i)) + ")";
+      var a = g.append("g").attr("transform", function(d) {
+        return "translate(700," + (100 + 30 * i) + ")";
+      });
+
+      a
+        .append("rect")
+        .data(data)
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("class", function(d) {
+          return d.ticker + " normal";
+        })
+        .style("fill", function(d) {
+          return color(d.ticker);
         });
 
-        a
-      .append("rect")
-      .data(data)
-      .attr("width", 15)
-      .attr("height", 15)
-      .attr("class", function(d) {
-        return d.ticker + " normal";
-      })
-      .style("fill", function(d) {
-        return color(d.ticker);
-      })
-
-
-    a
-      .append("text")
-      .data(data)
-      .attr("dy", ".8em")
-      .attr("x", 25)
-      .attr("fill", "black")
-      .attr("class", function(d) {
-        return d.ticker + " normal ";
-      })
-      .text(function(d) {
-        return d.ticker;
-      })
-
-
-
+      a
+        .append("text")
+        .data(data)
+        .attr("dy", ".8em")
+        .attr("x", 25)
+        .attr("fill", "black")
+        .attr("class", function(d) {
+          return d.ticker + " normal ";
+        })
+        .text(function(d) {
+          return d.ticker;
+        })
+        .on("click", function(d) {
+          Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, d.ticker);
+        });
     };
 
     for (var i = 0; i < stockData.length; i++) {
       let data = Object(__WEBPACK_IMPORTED_MODULE_0__cleanData_js__["b" /* singleStock */])(stockData[i]);
-      makePath(g, i, data);
+      makePath(stockData, g, i, data);
     }
-
   });
 };
 
@@ -279,6 +278,42 @@ const singleStock = array => {
   });
 };
 /* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;
+
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const changePage = (stockData, ticker) => {
+  let singleStockData = [];
+  for (let i = 0; i < stockData.length; i++) {
+    for (var j = 0; j < stockData[i].length; j++) {
+      if (stockData[i][j].ticker === ticker) {
+        singleStockData.push(stockData[i][j]);
+      }
+    }
+  }
+
+
+
+  d3
+   .select("#root2")
+   .append("svg")
+   .attr("height", "100%")
+   .attr("width", "100%")
+   .attr("class", "svg-single-stock");
+
+
+
+
+
+
+
+
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = changePage;
 
 
 

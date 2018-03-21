@@ -1,4 +1,5 @@
 import { cleanerData, singleStock } from "./cleanData.js";
+import { changePage } from "./barGraph.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   defaultStocks();
@@ -12,7 +13,7 @@ const defaultStocks = () => {
     promises.push(fetchStock(defaults[i]));
   }
   Promise.all(promises).then(results => {
-    let stockData = results.map(res => {
+    var stockData = results.map(res => {
       return cleanerData(res);
     });
 
@@ -30,13 +31,13 @@ const defaultStocks = () => {
       d.ticker = d.ticker;
     });
 
-    const makeSvg = () => {
+    const makeSvg = className => {
       return d3
         .select("#root")
         .append("svg")
         .attr("height", height + margin.left + margin.right + 50)
         .attr("width", "100%")
-        .attr("class", "svg-all-stocks");
+        .attr("class", className);
     };
 
     const maxAndMin = () => {
@@ -57,6 +58,8 @@ const defaultStocks = () => {
     };
 
     var [max, min] = maxAndMin();
+
+
 
     var x = d3
       .scaleBand()
@@ -89,8 +92,7 @@ const defaultStocks = () => {
         return height + margin.top - y(d.close);
       });
 
-
-    let svg = makeSvg();
+    let svg = makeSvg("svg-all-stocks");
 
     let g = svg
       .append("g")
@@ -109,7 +111,7 @@ const defaultStocks = () => {
       .attr("transform", "translate(50," + margin.top + ")")
       .call(d3.axisLeft(y2));
 
-    const makePath = (g, i, data) => {
+    const makePath = (stockData, g, i, data) => {
       g
         .append("path")
         .data([data])
@@ -122,47 +124,43 @@ const defaultStocks = () => {
         .attr("stroke-width", "2px")
         .attr("fill", "none");
 
-        var a = g
-          .append("g")
-          .attr("transform", function(d) {
-          return "translate(700," + (100 + (30 * i)) + ")";
+      var a = g.append("g").attr("transform", function(d) {
+        return "translate(700," + (100 + 30 * i) + ")";
+      });
+
+      a
+        .append("rect")
+        .data(data)
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("class", function(d) {
+          return d.ticker + " normal";
+        })
+        .style("fill", function(d) {
+          return color(d.ticker);
         });
 
-        a
-      .append("rect")
-      .data(data)
-      .attr("width", 15)
-      .attr("height", 15)
-      .attr("class", function(d) {
-        return d.ticker + " normal";
-      })
-      .style("fill", function(d) {
-        return color(d.ticker);
-      })
-
-
-    a
-      .append("text")
-      .data(data)
-      .attr("dy", ".8em")
-      .attr("x", 25)
-      .attr("fill", "black")
-      .attr("class", function(d) {
-        return d.ticker + " normal ";
-      })
-      .text(function(d) {
-        return d.ticker;
-      })
-
-
-
+      a
+        .append("text")
+        .data(data)
+        .attr("dy", ".8em")
+        .attr("x", 25)
+        .attr("fill", "black")
+        .attr("class", function(d) {
+          return d.ticker + " normal ";
+        })
+        .text(function(d) {
+          return d.ticker;
+        })
+        .on("click", function(d) {
+          changePage(stockData, d.ticker);
+        });
     };
 
     for (var i = 0; i < stockData.length; i++) {
       let data = singleStock(stockData[i]);
-      makePath(g, i, data);
+      makePath(stockData, g, i, data);
     }
-
   });
 };
 
