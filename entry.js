@@ -44,12 +44,12 @@ const defaultStocks = () => {
       let min;
       for (let i = 0; i < stockData.length; i++) {
         for (var j = 0; j < stockData[i].length; j++) {
-          if (!min || parseInt(stockData[i][j]["4. close"]) < min) {
-            min = parseInt(stockData[i][j]["4. close"]);
+          if (!min || parseFloat(stockData[i][j]["4. close"]) < min) {
+            min = parseFloat(stockData[i][j]["4. close"]);
           }
 
-          if (!max || parseInt(stockData[i][j]["4. close"]) > max) {
-            max = parseInt(stockData[i][j]["4. close"]);
+          if (!max || parseFloat(stockData[i][j]["4. close"]) > max) {
+            max = parseFloat(stockData[i][j]["4. close"]);
           }
         }
       }
