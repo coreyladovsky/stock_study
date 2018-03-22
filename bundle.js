@@ -184,6 +184,12 @@ const defaultStocks = () => {
       .attr("fill", "white")
       .attr("class", "date-text")
 
+    g.append("text")
+      .attr("transform", "translate("+ (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]) +"," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
+      .text("Click on a Stock for more Info")
+      .attr("fill", "white")
+      .attr("class", "info-text")
+
     const makePath = (stockData, g, i, data) => {
       let path =
       g

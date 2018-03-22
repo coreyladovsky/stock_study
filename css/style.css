@@ -98,6 +98,7 @@ text {
 #root2 {
   display: flex;
   justify-content: center;
+  min-width: 1017px;
 }
 
 /* g {
@@ -119,7 +120,7 @@ text {
   width: 1006px;
   margin: auto;
   text-align: right;
-  margin-top: 50px;
+  margin-top: 55px;
   color: white;
 }
 
