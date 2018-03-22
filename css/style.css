@@ -3,9 +3,33 @@
   text-align: center;
 }
 
+html {
+  background: black;
+}
+
 text {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
+}
+
+.line2:hover {
+  cursor: pointer;
+}
+
+
+.x-axis {
+  fill: white;
+}
+
+.y-axis {
+  fill: white;
+}
+.y-axis text {
+  fill: white;
+}
+
+.x-axis text {
+  fill: white;
 }
 
 .normal:hover {
@@ -16,11 +40,13 @@ text {
 .title {
   font-size: 55px;
   font-weight: bold;
-      text-shadow: 2px 2px darkgrey;
+  text-shadow: 2px 2px darkgrey;
+  color: white;
 }
 
 .name {
   font-size: 22px;
+  color: white;
 }
 
 .link-list {
@@ -32,7 +58,7 @@ text {
 }
 
 .githublink, .linked-in-link {
-  color: black;
+  color: white;
   margin-right: 20px;
   font-size: 35px;
 }

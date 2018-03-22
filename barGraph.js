@@ -219,13 +219,13 @@ export const changePage = (stockData, ticker) => {
 
   g
     .append("g")
-    .attr("class", "x-axis")
+    .attr("class", "x-axis-bar")
     .attr("transform", "translate(0," + (height + margin.top) + ")")
     .call(d3.axisBottom(x));
 
   g
     .append("g")
-    .attr("class", "y-axis")
+    .attr("class", "y-axis-bar")
     .attr("transform", "translate(0," + margin.top + ")")
     .call(d3.axisLeft(y2));
 };

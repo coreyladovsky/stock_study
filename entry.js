@@ -85,12 +85,14 @@ const defaultStocks = () => {
     g
       .append("g")
       .attr("class", "x-axis")
+      .attr("fill", "white")
       .attr("transform", "translate(0, " + (height + margin.top) + ")")
       .call(d3.axisBottom(x));
     //
     g
       .append("g")
       .attr("class", "y-axis")
+      .attr("fill", "white")
       .attr("transform", "translate(50," + margin.top + ")")
       .call(d3.axisLeft(y2));
 
@@ -104,8 +106,11 @@ const defaultStocks = () => {
         .attr("stroke", function(d) {
           return color(d[0].ticker);
         })
-        .attr("stroke-width", "3px")
-        .attr("fill", "none");
+        .attr("stroke-width", "4px")
+        .attr("fill", "none")
+        .on("click", function(d) {
+          changePage(stockData, d[0].ticker);
+        });
 
       var a = g.append("g").attr("transform", function(d) {
         return "translate(700," + (100 + 30 * i) + ")";
@@ -121,6 +126,9 @@ const defaultStocks = () => {
         })
         .style("fill", function(d) {
           return color(d.ticker);
+        })
+        .on("click", function(d) {
+          changePage(stockData, d.ticker);
         });
 
       a
@@ -128,7 +136,7 @@ const defaultStocks = () => {
         .data(data)
         .attr("dy", ".8em")
         .attr("x", 25)
-        .attr("fill", "black")
+        .attr("fill", "white")
         .attr("class", function(d) {
           return d.ticker + " normal ";
         })
