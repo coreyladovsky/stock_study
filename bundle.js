@@ -161,15 +161,27 @@ const defaultStocks = () => {
       .append("g")
       .attr("class", "x-axis")
       .attr("fill", "white")
-      .attr("transform", "translate(0, " + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top) + ")")
+      .attr("transform", "translate(100, " + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top) + ")")
       .call(d3.axisBottom(x));
     //
     g
       .append("g")
       .attr("class", "y-axis")
       .attr("fill", "white")
-      .attr("transform", "translate(50," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
+      .attr("transform", "translate(150," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
       .call(d3.axisLeft(y2));
+
+    g.append("text")
+      .attr("transform", "translate(70," + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] / 2 + 70) + ") rotate(-90)")
+      .text("PRICE")
+      .attr("fill", "white")
+      .attr("class", "price-text")
+
+    g.append("text")
+      .attr("transform", "translate("+ (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]/ 2 + 75) +"," + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + 85) + ")")
+      .text("DATE")
+      .attr("fill", "white")
+      .attr("class", "date-text")
 
     const makePath = (stockData, g, i, data) => {
       g
@@ -177,7 +189,7 @@ const defaultStocks = () => {
         .data([data])
         .attr("d", drawLine)
         .attr("class", "line2")
-        .attr("transform", "translate(40," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
+        .attr("transform", "translate(140," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
         .attr("stroke", function(d) {
           return Object(__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["a" /* color */])(d[0].ticker);
         })
@@ -188,7 +200,7 @@ const defaultStocks = () => {
         });
 
       var a = g.append("g").attr("transform", function(d) {
-        return "translate(700," + (100 + 30 * i) + ")";
+        return "translate(800," + (100 + 30 * i) + ")";
       });
 
       a
@@ -233,7 +245,7 @@ const defaultStocks = () => {
 const makeG = svg => {
   return svg
     .append("g")
-    .attr("tranform", "translate(" + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].left + "," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
+    .attr("tranform", "translate(" + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].left) + "," + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top + ")")
     .attr("height", __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */])
     .attr("width", __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]);
 };

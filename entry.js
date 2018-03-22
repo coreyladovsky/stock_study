@@ -86,15 +86,27 @@ const defaultStocks = () => {
       .append("g")
       .attr("class", "x-axis")
       .attr("fill", "white")
-      .attr("transform", "translate(0, " + (height + margin.top) + ")")
+      .attr("transform", "translate(100, " + (height + margin.top) + ")")
       .call(d3.axisBottom(x));
     //
     g
       .append("g")
       .attr("class", "y-axis")
       .attr("fill", "white")
-      .attr("transform", "translate(50," + margin.top + ")")
+      .attr("transform", "translate(150," + margin.top + ")")
       .call(d3.axisLeft(y2));
+
+    g.append("text")
+      .attr("transform", "translate(70," + (height / 2 + 70) + ") rotate(-90)")
+      .text("PRICE")
+      .attr("fill", "white")
+      .attr("class", "price-text")
+
+    g.append("text")
+      .attr("transform", "translate("+ (width/ 2 + 75) +"," + (height + 85) + ")")
+      .text("DATE")
+      .attr("fill", "white")
+      .attr("class", "date-text")
 
     const makePath = (stockData, g, i, data) => {
       g
@@ -102,7 +114,7 @@ const defaultStocks = () => {
         .data([data])
         .attr("d", drawLine)
         .attr("class", "line2")
-        .attr("transform", "translate(40," + margin.top + ")")
+        .attr("transform", "translate(140," + margin.top + ")")
         .attr("stroke", function(d) {
           return color(d[0].ticker);
         })
@@ -113,7 +125,7 @@ const defaultStocks = () => {
         });
 
       var a = g.append("g").attr("transform", function(d) {
-        return "translate(700," + (100 + 30 * i) + ")";
+        return "translate(800," + (100 + 30 * i) + ")";
       });
 
       a
@@ -158,7 +170,7 @@ const defaultStocks = () => {
 const makeG = svg => {
   return svg
     .append("g")
-    .attr("tranform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("tranform", "translate(" + (margin.left) + "," + margin.top + ")")
     .attr("height", height)
     .attr("width", width);
 };
