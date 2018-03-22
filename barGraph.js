@@ -66,12 +66,11 @@ export const changePage = (stockData, ticker) => {
 
   d3.select("#single-stock-container").on("click", hideModal);
 
-    svg
+  svg
     .append("text")
-    .attr("transform", "translate(" + ((width / 2) + 40) + "," + 10 + ")")
+    .attr("transform", "translate(" + (width / 2 + 40) + "," + 10 + ")")
     .text(ticker)
-    .attr("class", "stock-header")
-
+    .attr("class", "stock-header");
 
   let g = svg.append("g").attr("transform", "translate(" + 50 + "," + 10 + ")");
 
@@ -113,6 +112,41 @@ export const changePage = (stockData, ticker) => {
       .attr("width", 15)
       .attr("height", function(d) {
         return y(d.number);
+      })
+      // .append("svg:title")
+      // .text(function(d) { return d.number});
+
+    var q =  g
+      // .append("g")
+      // .attr("transform", "translate(" + 50 + "," + 10 + ")")
+      // .attr("height", 40)
+      // .attr("width", 40)
+      // .selectAll("tooltip")
+      // .data(data)
+      // .enter()
+      .append("g")
+      .attr("class", "tooltip")
+
+      // .attr("height", "30px")
+      // .attr("width", 30)
+      // .attr("fill", "yellow")
+      // .attr("x", function(d) {
+      //   return x(d.date) + idx * 15 + 11;
+      // })
+      // .attr("y", function(d) {
+      //   return 425 - y(d.number) + 5;
+      // })
+      .append("rect")
+      .attr("rx", 5)
+      .attr("width", 100)
+      .attr("height", 25)
+
+      g
+      .append("text")
+      .data(data)
+      .attr("class", "tooltip-text")
+      .text(function(d) {
+        return d.number;
       });
 
     let a = g.append("g").attr("transform", function(d) {
