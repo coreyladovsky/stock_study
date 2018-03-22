@@ -114,57 +114,24 @@ export const changePage = (stockData, ticker) => {
         return y(d.number);
       })
       .on("mouseover", function(d, i) {
-        debugger
+        d3.select(`#toolbox-${d.word}-${i}`)
+          .attr("opacity", .8)
+
+        d3.select(`#tooltext-${d.word}-${i}`)
+            .attr("opacity", 1)
+
+      })
+      .on("mouseout", function(d, i) {
+        d3.select(`#toolbox-${d.word}-${i}`)
+          .attr("opacity", 0)
+
+        d3.select(`#tooltext-${d.word}-${i}`)
+            .attr("opacity", 0)
+
       })
       // .append("svg:title")
       // .text(function(d) { return d.number});
 
-    var q =  g
-      .append("g")
-      .selectAll("rect")
-      .attr("class", "tooltip")
-      .data(data)
-      .enter()
-
-      .append("rect")
-      .attr("x", function(d) {
-        return x(d.date) + idx * 15 + 11;
-      })
-      .attr("y", function(d) {
-        return 425 - y(d.number);
-      })
-      .attr("class", function(d, i) {
-        return `toolbox-${idx}-${i}`;
-      })
-      .attr("rx", 5)
-      .attr("width", 100)
-      .attr("height", 25)
-      .attr("fill", "#cc2be2")
-      .attr("opacity", .6)
-      .attr("visibility", "hidden")
-
-      g
-      .append("g")
-      .selectAll("text")
-      .data(data)
-      .enter()
-      .append("text")
-      .attr("class", function(d, i) {
-        return `tooltext-${idx}-${i}`;
-      })
-      .attr("x", function(d) {
-        return x(d.date) + idx * 15 + 35;
-      })
-      .attr("y", function(d) {
-        return 425 - y(d.number) + 18;
-      })
-      .attr("fill", "white")
-      .attr("visibility", "hidden")
-
-
-      .text(function(d) {
-        return d.number;
-      });
 
     let a = g.append("g").attr("transform", function(d) {
       return "translate(700," + (100 + 30 * idx) + ")";
@@ -190,9 +157,63 @@ export const changePage = (stockData, ticker) => {
       });
   };
 
+  const drawToolTip = (g, data, idx) => {
+
+    var q =  g
+      .append("g")
+      .selectAll("rect")
+      .attr("class", "tooltip")
+      .data(data)
+      .enter()
+
+      .append("rect")
+      .attr("x", function(d) {
+        return x(d.date) + idx * 15 + 11;
+      })
+      .attr("y", function(d) {
+        return 425 - y(d.number);
+      })
+      .attr("id", function(d, i) {
+        return `toolbox-${d.word}-${i}`;
+      })
+      .attr("rx", 5)
+      .attr("width", 100)
+      .attr("height", 25)
+      .attr("fill", "#cc2be2")
+      .attr("opacity", 0)
+
+      g
+      .append("g")
+      .selectAll("text")
+      .data(data)
+      .enter()
+      .append("text")
+      .attr("id", function(d, i) {
+        return `tooltext-${d.word}-${i}`;
+      })
+      .attr("x", function(d) {
+        return x(d.date) + idx * 15 + 35;
+      })
+      .attr("y", function(d) {
+        return 425 - y(d.number) + 18;
+      })
+      .attr("fill", "white")
+      .attr("opacity", 0)
+
+
+      .text(function(d) {
+        return d.number;
+      });
+
+  }
+
   for (let idx = 0; idx < allData.length; idx++) {
     data = allData[idx];
     drawBar(g, data, idx);
+  }
+  for (let idx = 0; idx < allData.length; idx++) {
+    data = allData[idx];
+    drawToolTip(g, data, idx);
   }
 
   g
