@@ -104,7 +104,7 @@ const defaultStocks = () => {
         .attr("stroke", function(d) {
           return color(d[0].ticker);
         })
-        .attr("stroke-width", "2px")
+        .attr("stroke-width", "3px")
         .attr("fill", "none");
 
       var a = g.append("g").attr("transform", function(d) {

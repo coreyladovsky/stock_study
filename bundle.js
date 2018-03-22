@@ -179,7 +179,7 @@ const defaultStocks = () => {
         .attr("stroke", function(d) {
           return Object(__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["a" /* color */])(d[0].ticker);
         })
-        .attr("stroke-width", "2px")
+        .attr("stroke-width", "3px")
         .attr("fill", "none");
 
       var a = g.append("g").attr("transform", function(d) {
