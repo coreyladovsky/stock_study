@@ -179,7 +179,7 @@ const defaultStocks = () => {
       .attr("class", "price-text")
 
     g.append("text")
-      .attr("transform", "translate("+ (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]/ 2 + 75) +"," + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + 85) + ")")
+      .attr("transform", "translate("+ (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["f" /* width */]/ 2 + 75) +"," + (__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + 95) + ")")
       .text("DATE")
       .attr("fill", "white")
       .attr("class", "date-text")

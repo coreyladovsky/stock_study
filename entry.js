@@ -104,7 +104,7 @@ const defaultStocks = () => {
       .attr("class", "price-text")
 
     g.append("text")
-      .attr("transform", "translate("+ (width/ 2 + 75) +"," + (height + 85) + ")")
+      .attr("transform", "translate("+ (width/ 2 + 75) +"," + (height + 95) + ")")
       .text("DATE")
       .attr("fill", "white")
       .attr("class", "date-text")
