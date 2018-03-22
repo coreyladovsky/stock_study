@@ -354,44 +354,35 @@ const changePage = (stockData, ticker) => {
       .attr("height", function(d) {
         return y(d.number);
       })
+      .on("mouseover", function(d, i) {
+        debugger
+      })
       // .append("svg:title")
       // .text(function(d) { return d.number});
 
     var q =  g
-      // .append("g")
-      // .attr("transform", "translate(" + 50 + "," + 10 + ")")
-      // .attr("height", 40)
-      // .attr("width", 40)
-      // .selectAll("tooltip")
-      // .data(data)
-      // .enter()
       .append("g")
       .selectAll("rect")
       .attr("class", "tooltip")
       .data(data)
       .enter()
 
-      // .attr("height", "30px")
-      // .attr("width", 30)
-      // .attr("fill", "yellow")
-      // .attr("x", function(d) {
-      //   return x(d.date) + idx * 15 + 11;
-      // })
-      // .attr("y", function(d) {
-      //   return 425 - y(d.number) + 5;
-      // })
       .append("rect")
       .attr("x", function(d) {
         return x(d.date) + idx * 15 + 11;
       })
       .attr("y", function(d) {
-        return 425 - y(d.number) + 5;
+        return 425 - y(d.number);
       })
-      .attr("class", "tool-tip-rec")
+      .attr("class", function(d, i) {
+        return `toolbox-${idx}-${i}`;
+      })
       .attr("rx", 5)
       .attr("width", 100)
       .attr("height", 25)
       .attr("fill", "#cc2be2")
+      .attr("opacity", .6)
+      .attr("visibility", "hidden")
 
       g
       .append("g")
@@ -399,13 +390,18 @@ const changePage = (stockData, ticker) => {
       .data(data)
       .enter()
       .append("text")
-      .attr("class", "tooltip-text")
+      .attr("class", function(d, i) {
+        return `tooltext-${idx}-${i}`;
+      })
       .attr("x", function(d) {
-        return x(d.date) + idx * 15 + 11;
+        return x(d.date) + idx * 15 + 35;
       })
       .attr("y", function(d) {
-        return 425 - y(d.number) + 5;
+        return 425 - y(d.number) + 18;
       })
+      .attr("fill", "white")
+      .attr("visibility", "hidden")
+
 
       .text(function(d) {
         return d.number;
