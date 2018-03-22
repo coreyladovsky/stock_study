@@ -378,6 +378,16 @@ const changePage = (stockData, ticker) => {
       //   return 425 - y(d.number) + 5;
       // })
       .append("rect")
+      .data(data)
+      .enter()
+      .attr("x", function(d) {
+        debugger
+        return x(d.date) + idx * 15 + 11;
+      })
+      .attr("y", function(d) {
+        return 425 - y(d.number) + 5;
+      })
+      .attr("class", "tool-tip-rec")
       .attr("rx", 5)
       .attr("width", 100)
       .attr("height", 25)
@@ -386,6 +396,7 @@ const changePage = (stockData, ticker) => {
       .append("text")
       .data(data)
       .attr("class", "tooltip-text")
+
       .text(function(d) {
         return d.number;
       });
