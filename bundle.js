@@ -95,17 +95,10 @@ const defaultStocks = () => {
 
     const data = Object(__WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__["b" /* singleStock */])(stockData[0]);
 
-    // const margin = { top: 30, bottom: 50, left: 50, right: 10 };
-
-    // const width = 700 - margin.right - margin.left;
-    // const height = 500 - margin.top - margin.bottom;
-    // const color = d3.scaleOrdinal(d3.schemeCategory10);
-
     data.forEach(function(d) {
       d.date = d.date;
       d.ticker = d.ticker;
     });
-
 
     const maxAndMin = () => {
       let max;
@@ -125,8 +118,6 @@ const defaultStocks = () => {
     };
 
     var [max, min] = maxAndMin();
-
-
 
     var x = d3
       .scaleBand()
@@ -312,12 +303,15 @@ const changePage = (stockData, ticker) => {
   let height = 525 - margin.top - margin.bottom;
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
+  let svg = Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["d" /* makeSvg */])("svg-single-stock", "#root2", margin, height, width + 200);
 
-let svg = Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["d" /* makeSvg */])("svg-single-stock", "#root2", margin, height, (width + 200))
+  d3.select("#single-stock-container").on("click", hideModal);
 
-
-  svg
-    .on("click", hideModal);
+    svg
+    .append("text")
+    .attr("transform", "translate(" + ((width / 2) + 40) + "," + 10 + ")")
+    .text(ticker)
+    .attr("class", "stock-header")
 
   let g = svg.append("g").attr("transform", "translate(" + 50 + "," + 10 + ")");
 
@@ -342,7 +336,6 @@ let svg = Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["d" /* makeSv
     .domain([max, 0]);
 
   const drawBar = (g, data, idx) => {
-
     g
       .append("g")
       .selectAll("rect")
@@ -351,7 +344,7 @@ let svg = Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["d" /* makeSv
       .append("rect")
       .attr("class", "bar")
       .attr("x", function(d) {
-        return x(d.date) + (idx * 15) + 11;
+        return x(d.date) + idx * 15 + 11;
       })
       .attr("y", function(d) {
         return 425 - y(d.number);
@@ -362,31 +355,28 @@ let svg = Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["d" /* makeSv
         return y(d.number);
       });
 
+    let a = g.append("g").attr("transform", function(d) {
+      return "translate(700," + (100 + 30 * idx) + ")";
+    });
 
+    a
+      .append("rect")
+      .data(data)
+      .attr("width", 15)
+      .attr("height", 15)
+      .style("fill", function(d) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["b" /* color2 */])(idx);
+      });
 
-            let a = g.append("g").attr("transform", function(d) {
-              return "translate(700," + (100 + 30 * idx) + ")";
-            });
-
-            a
-              .append("rect")
-              .data(data)
-              .attr("width", 15)
-              .attr("height", 15)
-              .style("fill", function(d) {
-                return Object(__WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__["b" /* color2 */])(idx);
-              });
-
-            a
-              .append("text")
-              .data(data)
-              .attr("dy", ".8em")
-              .attr("x", 25)
-              .attr("fill", "black")
-              .text(function(d) {
-                return d.word;
-              })
-
+    a
+      .append("text")
+      .data(data)
+      .attr("dy", ".8em")
+      .attr("x", 25)
+      .attr("fill", "black")
+      .text(function(d) {
+        return d.word;
+      });
   };
 
   for (let idx = 0; idx < allData.length; idx++) {
@@ -472,8 +462,6 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 const color2 = d3.scaleOrdinal(d3.schemeCategory10);
 /* harmony export (immutable) */ __webpack_exports__["b"] = color2;
-
-
 
 
 const makeSvg = (className, rootId, obj, h, w) => {

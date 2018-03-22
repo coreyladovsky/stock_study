@@ -62,12 +62,15 @@ export const changePage = (stockData, ticker) => {
   let height = 525 - margin.top - margin.bottom;
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
+  let svg = makeSvg("svg-single-stock", "#root2", margin, height, width + 200);
 
-let svg = makeSvg("svg-single-stock", "#root2", margin, height, (width + 200))
+  d3.select("#single-stock-container").on("click", hideModal);
 
-
-  svg
-    .on("click", hideModal);
+    svg
+    .append("text")
+    .attr("transform", "translate(" + ((width / 2) + 40) + "," + 10 + ")")
+    .text(ticker)
+    .attr("class", "stock-header")
 
   let g = svg.append("g").attr("transform", "translate(" + 50 + "," + 10 + ")");
 
@@ -92,7 +95,6 @@ let svg = makeSvg("svg-single-stock", "#root2", margin, height, (width + 200))
     .domain([max, 0]);
 
   const drawBar = (g, data, idx) => {
-
     g
       .append("g")
       .selectAll("rect")
@@ -101,7 +103,7 @@ let svg = makeSvg("svg-single-stock", "#root2", margin, height, (width + 200))
       .append("rect")
       .attr("class", "bar")
       .attr("x", function(d) {
-        return x(d.date) + (idx * 15) + 11;
+        return x(d.date) + idx * 15 + 11;
       })
       .attr("y", function(d) {
         return 425 - y(d.number);
@@ -112,31 +114,28 @@ let svg = makeSvg("svg-single-stock", "#root2", margin, height, (width + 200))
         return y(d.number);
       });
 
+    let a = g.append("g").attr("transform", function(d) {
+      return "translate(700," + (100 + 30 * idx) + ")";
+    });
 
+    a
+      .append("rect")
+      .data(data)
+      .attr("width", 15)
+      .attr("height", 15)
+      .style("fill", function(d) {
+        return color2(idx);
+      });
 
-            let a = g.append("g").attr("transform", function(d) {
-              return "translate(700," + (100 + 30 * idx) + ")";
-            });
-
-            a
-              .append("rect")
-              .data(data)
-              .attr("width", 15)
-              .attr("height", 15)
-              .style("fill", function(d) {
-                return color2(idx);
-              });
-
-            a
-              .append("text")
-              .data(data)
-              .attr("dy", ".8em")
-              .attr("x", 25)
-              .attr("fill", "black")
-              .text(function(d) {
-                return d.word;
-              })
-
+    a
+      .append("text")
+      .data(data)
+      .attr("dy", ".8em")
+      .attr("x", 25)
+      .attr("fill", "black")
+      .text(function(d) {
+        return d.word;
+      });
   };
 
   for (let idx = 0; idx < allData.length; idx++) {

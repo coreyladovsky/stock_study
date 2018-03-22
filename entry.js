@@ -20,17 +20,10 @@ const defaultStocks = () => {
 
     const data = singleStock(stockData[0]);
 
-    // const margin = { top: 30, bottom: 50, left: 50, right: 10 };
-
-    // const width = 700 - margin.right - margin.left;
-    // const height = 500 - margin.top - margin.bottom;
-    // const color = d3.scaleOrdinal(d3.schemeCategory10);
-
     data.forEach(function(d) {
       d.date = d.date;
       d.ticker = d.ticker;
     });
-
 
     const maxAndMin = () => {
       let max;
@@ -50,8 +43,6 @@ const defaultStocks = () => {
     };
 
     var [max, min] = maxAndMin();
-
-
 
     var x = d3
       .scaleBand()

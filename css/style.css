@@ -16,6 +16,7 @@ text {
 .title {
   font-size: 55px;
   font-weight: bold;
+      text-shadow: 2px 2px darkgrey;
 }
 
 .name {
@@ -55,13 +56,14 @@ text {
 }
 
 .svg-single-stock:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .svg-single-stock {
   background: white;
   margin: auto;
   margin-top: 40px;
+  padding-top: 40px;
 }
 
 #root2 {
@@ -73,7 +75,11 @@ text {
   background:
 } */
 
-
+.stock-header {
+  font-size: 40px;
+  text-shadow: 2px 2px 8px #847878;
+  font-weight: bold;
+}
 
 
 .bar:hover {
