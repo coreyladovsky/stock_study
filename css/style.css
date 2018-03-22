@@ -62,7 +62,6 @@ text {
 .svg-single-stock {
   background: white;
   margin: auto;
-  margin-top: 40px;
   padding-top: 40px;
 }
 
@@ -86,7 +85,27 @@ text {
   cursor: pointer;
 }
 
+.close-button {
+  width: 1006px;
+  margin: auto;
+  text-align: right;
+  margin-top: 40px;
+  color: white;
+}
 
+.close-text {
+  display: inline;
+  border: 1px solid;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.close-text:hover {
+  text-decoration: underline;
+  color:black;
+  background: white;
+  cursor: pointer;
+}
 
 
 

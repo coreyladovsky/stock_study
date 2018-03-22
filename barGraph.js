@@ -72,6 +72,7 @@ export const changePage = (stockData, ticker) => {
     .text(ticker)
     .attr("class", "stock-header")
 
+
   let g = svg.append("g").attr("transform", "translate(" + 50 + "," + 10 + ")");
 
   let x = d3
