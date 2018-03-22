@@ -4,7 +4,6 @@ const hideModal = () => {
   d3.selectAll(".svg-single-stock").remove();
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
-
 };
 
 export const changePage = (stockData, ticker) => {
@@ -103,6 +102,26 @@ export const changePage = (stockData, ticker) => {
       .enter()
       .append("rect")
       .attr("class", "bar")
+      .attr("height", 0)
+      .attr("x", function(d) {
+        return x(d.date) + idx * 15 + 11;
+      })
+      .attr("y", height)
+      .on("mouseover", function(d, i) {
+        d3
+          .select(`#toolbox-${d.word}-${i}`)
+          .attr("opacity", 0.8)
+          .attr("visibility", "visible");
+
+        d3.select(`#tooltext-${d.word}-${i}`).attr("visibility", "visible");
+      })
+      .on("mouseout", function(d, i) {
+        d3.select(`#toolbox-${d.word}-${i}`).attr("visibility", "hidden");
+
+        d3.select(`#tooltext-${d.word}-${i}`).attr("visibility", "hidden");
+      })
+      .transition()
+      .duration(1000)
       .attr("x", function(d) {
         return x(d.date) + idx * 15 + 11;
       })
@@ -113,27 +132,10 @@ export const changePage = (stockData, ticker) => {
       .attr("width", 15)
       .attr("height", function(d) {
         return y(d.number);
-      })
-      .on("mouseover", function(d, i) {
-        d3.select(`#toolbox-${d.word}-${i}`)
-          .attr("opacity", .8)
-          .attr("visibility", "visible")
+      });
 
-        d3.select(`#tooltext-${d.word}-${i}`)
-        .attr("visibility", "visible")
-
-      })
-      .on("mouseout", function(d, i) {
-        d3.select(`#toolbox-${d.word}-${i}`)
-          .attr("visibility", "hidden")
-
-        d3.select(`#tooltext-${d.word}-${i}`)
-        .attr("visibility", "hidden")
-
-      })
-      // .append("svg:title")
-      // .text(function(d) { return d.number});
-
+    // .append("svg:title")
+    // .text(function(d) { return d.number});
 
     let a = g.append("g").attr("transform", function(d) {
       return "translate(700," + (100 + 30 * idx) + ")";
@@ -160,8 +162,7 @@ export const changePage = (stockData, ticker) => {
   };
 
   const drawToolTip = (g, data, idx) => {
-
-    var q =  g
+    var q = g
       .append("g")
       .selectAll("rect")
       .attr("class", "tooltip")
@@ -182,9 +183,9 @@ export const changePage = (stockData, ticker) => {
       .attr("width", 100)
       .attr("height", 25)
       .attr("fill", "#cc2be2")
-      .attr("visibility", "hidden")
+      .attr("visibility", "hidden");
 
-      g
+    g
       .append("g")
       .selectAll("text")
       .data(data)
@@ -202,12 +203,10 @@ export const changePage = (stockData, ticker) => {
       .attr("fill", "white")
       .attr("visibility", "hidden")
 
-
       .text(function(d) {
         return d.number;
       });
-
-  }
+  };
 
   for (let idx = 0; idx < allData.length; idx++) {
     data = allData[idx];
