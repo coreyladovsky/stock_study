@@ -357,17 +357,18 @@ const changePage = (stockData, ticker) => {
       .on("mouseover", function(d, i) {
         d3.select(`#toolbox-${d.word}-${i}`)
           .attr("opacity", .8)
+          .attr("visibility", "visible")
 
         d3.select(`#tooltext-${d.word}-${i}`)
-            .attr("opacity", 1)
+        .attr("visibility", "visible")
 
       })
       .on("mouseout", function(d, i) {
         d3.select(`#toolbox-${d.word}-${i}`)
-          .attr("opacity", 0)
+          .attr("visibility", "hidden")
 
         d3.select(`#tooltext-${d.word}-${i}`)
-            .attr("opacity", 0)
+        .attr("visibility", "hidden")
 
       })
       // .append("svg:title")
@@ -409,10 +410,10 @@ const changePage = (stockData, ticker) => {
 
       .append("rect")
       .attr("x", function(d) {
-        return x(d.date) + idx * 15 + 11;
+        return x(d.date) + idx * 15 - 29;
       })
       .attr("y", function(d) {
-        return 425 - y(d.number);
+        return 400 - y(d.number);
       })
       .attr("id", function(d, i) {
         return `toolbox-${d.word}-${i}`;
@@ -421,7 +422,7 @@ const changePage = (stockData, ticker) => {
       .attr("width", 100)
       .attr("height", 25)
       .attr("fill", "#cc2be2")
-      .attr("opacity", 0)
+      .attr("visibility", "hidden")
 
       g
       .append("g")
@@ -433,13 +434,13 @@ const changePage = (stockData, ticker) => {
         return `tooltext-${d.word}-${i}`;
       })
       .attr("x", function(d) {
-        return x(d.date) + idx * 15 + 35;
+        return x(d.date) + idx * 15 - 5;
       })
       .attr("y", function(d) {
-        return 425 - y(d.number) + 18;
+        return 425 - y(d.number) - 7;
       })
       .attr("fill", "white")
-      .attr("opacity", 0)
+      .attr("visibility", "hidden")
 
 
       .text(function(d) {
