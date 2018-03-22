@@ -4,6 +4,7 @@ const hideModal = () => {
   d3.selectAll(".svg-single-stock").remove();
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
+
 };
 
 export const changePage = (stockData, ticker) => {

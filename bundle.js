@@ -150,6 +150,7 @@ const defaultStocks = () => {
         return __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */] + __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */].top - y(d.close);
       });
 
+
     let svg = Object(__WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["d" /* makeSvg */])("svg-all-stocks", "#root", __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["e" /* margin */], __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__["c" /* height */], "100%");
 
     let g = svg
@@ -184,6 +185,7 @@ const defaultStocks = () => {
       .attr("class", "date-text")
 
     const makePath = (stockData, g, i, data) => {
+      let path =
       g
         .append("path")
         .data([data])
@@ -197,7 +199,20 @@ const defaultStocks = () => {
         .attr("fill", "none")
         .on("click", function(d) {
           Object(__WEBPACK_IMPORTED_MODULE_1__barGraph_js__["a" /* changePage */])(stockData, d[0].ticker);
-        });
+        })
+
+        let length = path.node().getTotalLength();
+
+        path
+        .attr("stroke-dasharray", length + " " + length)
+        .attr("stroke-dashoffset", length)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0)
+
+
+
 
       var a = g.append("g").attr("transform", function(d) {
         return "translate(800," + (100 + 30 * i) + ")";
@@ -265,6 +280,7 @@ const hideModal = () => {
   d3.selectAll(".svg-single-stock").remove();
   let modal = document.getElementById("single-stock-container");
   modal.style.display = "none";
+
 };
 
 const changePage = (stockData, ticker) => {

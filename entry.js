@@ -75,6 +75,7 @@ const defaultStocks = () => {
         return height + margin.top - y(d.close);
       });
 
+
     let svg = makeSvg("svg-all-stocks", "#root", margin, height, "100%");
 
     let g = svg
@@ -109,6 +110,7 @@ const defaultStocks = () => {
       .attr("class", "date-text")
 
     const makePath = (stockData, g, i, data) => {
+      let path =
       g
         .append("path")
         .data([data])
@@ -122,7 +124,20 @@ const defaultStocks = () => {
         .attr("fill", "none")
         .on("click", function(d) {
           changePage(stockData, d[0].ticker);
-        });
+        })
+
+        let length = path.node().getTotalLength();
+
+        path
+        .attr("stroke-dasharray", length + " " + length)
+        .attr("stroke-dashoffset", length)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0)
+
+
+
 
       var a = g.append("g").attr("transform", function(d) {
         return "translate(800," + (100 + 30 * i) + ")";
