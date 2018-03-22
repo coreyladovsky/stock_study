@@ -125,7 +125,10 @@ export const changePage = (stockData, ticker) => {
       // .data(data)
       // .enter()
       .append("g")
+      .selectAll("rect")
       .attr("class", "tooltip")
+      .data(data)
+      .enter()
 
       // .attr("height", "30px")
       // .attr("width", 30)
@@ -137,10 +140,7 @@ export const changePage = (stockData, ticker) => {
       //   return 425 - y(d.number) + 5;
       // })
       .append("rect")
-      .data(data)
-      .enter()
       .attr("x", function(d) {
-        debugger
         return x(d.date) + idx * 15 + 11;
       })
       .attr("y", function(d) {
