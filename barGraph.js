@@ -150,11 +150,21 @@ export const changePage = (stockData, ticker) => {
       .attr("rx", 5)
       .attr("width", 100)
       .attr("height", 25)
+      .attr("fill", "#cc2be2")
 
       g
-      .append("text")
+      .append("g")
+      .selectAll("text")
       .data(data)
+      .enter()
+      .append("text")
       .attr("class", "tooltip-text")
+      .attr("x", function(d) {
+        return x(d.date) + idx * 15 + 11;
+      })
+      .attr("y", function(d) {
+        return 425 - y(d.number) + 5;
+      })
 
       .text(function(d) {
         return d.number;
