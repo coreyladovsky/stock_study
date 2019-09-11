@@ -9,13 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const defaultStocks = () => {
   let defaults = ["CHFS", "SPI", "DF", "MRNS", "NOG"];
-  // let promises = [];
-  // for (let i = 0; i < defaults.length; i++) {
-  //   promises.push(fetchStock(defaults[i]));
-  // }
-  // console.log(promises)
+
   Promise.all(defaults.map(fetchStock)).then(results => {
-    // debugger
     var stockData = results.map(res => {
       return cleanerData(res);
     });
@@ -69,7 +64,6 @@ const defaultStocks = () => {
 
     const drawLine = d3
       .line()
-      // .curve(d3.curveBasis)
       .x(function(d) {
         return x(d.date);
       })
@@ -187,7 +181,10 @@ const defaultStocks = () => {
       let data = singleStock(stockData[i]);
       makePath(stockData, g, i, data);
     }
-  });
+  })
+  .catch(err => {
+    // setTimeout(defaultStocks, 5000)
+  })
 };
 
 const makeG = svg => {

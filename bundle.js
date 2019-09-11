@@ -84,13 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const defaultStocks = () => {
   let defaults = ["CHFS", "SPI", "DF", "MRNS", "NOG"];
-  // let promises = [];
-  // for (let i = 0; i < defaults.length; i++) {
-  //   promises.push(fetchStock(defaults[i]));
-  // }
-  // console.log(promises)
+
   Promise.all(defaults.map(__WEBPACK_IMPORTED_MODULE_2__util_fetch_js__["a" /* fetchStock */])).then(results => {
-    // debugger
     var stockData = results.map(res => {
       return Object(__WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__["a" /* cleanerData */])(res);
     });
@@ -144,7 +139,6 @@ const defaultStocks = () => {
 
     const drawLine = d3
       .line()
-      // .curve(d3.curveBasis)
       .x(function(d) {
         return x(d.date);
       })
@@ -262,7 +256,10 @@ const defaultStocks = () => {
       let data = Object(__WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__["b" /* singleStock */])(stockData[i]);
       makePath(stockData, g, i, data);
     }
-  });
+  })
+  .catch(err => {
+    // setTimeout(defaultStocks, 5000)
+  })
 };
 
 const makeG = svg => {
@@ -314,9 +311,9 @@ const makeSvg = (className, rootId, obj, h, w) => {
 
 "use strict";
 const cleanerData = data => {
-  // debugger
   let finalData = [];
   let obj = data["Time Series (Daily)"];
+  if(!obj) return [];
   let lastSevenDates = Object.keys(obj).sort().slice(-7);
   lastSevenDates.forEach((date) => {
     finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
@@ -412,7 +409,7 @@ const changePage = (stockData, ticker) => {
 
   svg
     .append("text")
-    .attr("transform", "translate(" + (width / 2 + 40) + "," + 10 + ")")
+    .attr("transform", "translate(" + (width / 2 + 40) + "," + 40 + ")")
     .text(ticker)
     .attr("class", "stock-header");
 
@@ -584,17 +581,13 @@ const changePage = (stockData, ticker) => {
 "use strict";
 const fetchStock = async ticker => {
   try {
-  //   let data = await (await fetch(
-  //   `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
-  // ), {mode: 'no-cors'}).json();
-  let data = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`);
-    // debugger
+    let data = await fetch(
+      `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
+    );
     data = await data.json();
-    // debugger
-  return data;
+    return data;
   } catch (err) {
-    // debugger
-    console.log(err)
+    console.log(err);
   }
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = fetchStock;

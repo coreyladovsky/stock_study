@@ -1,7 +1,7 @@
 export const cleanerData = data => {
-  // debugger
   let finalData = [];
   let obj = data["Time Series (Daily)"];
+  if(!obj) return [];
   let lastSevenDates = Object.keys(obj).sort().slice(-7);
   lastSevenDates.forEach((date) => {
     finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
