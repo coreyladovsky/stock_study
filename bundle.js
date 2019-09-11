@@ -69,10 +69,10 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_cleanData_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__barGraph_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_fetch_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_fetch_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_d3_methods_js__ = __webpack_require__(1);
 
 
 
@@ -273,13 +273,72 @@ const makeG = svg => {
 
 
 /***/ }),
-/* 1 */,
-/* 2 */,
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const margin = { top: 30, bottom: 50, left: 50, right: 10 };
+/* harmony export (immutable) */ __webpack_exports__["e"] = margin;
+
+
+const width = 700 - margin.right - margin.left;
+/* harmony export (immutable) */ __webpack_exports__["f"] = width;
+
+const height = 500 - margin.top - margin.bottom;
+/* harmony export (immutable) */ __webpack_exports__["c"] = height;
+
+const color = d3.scaleOrdinal(d3.schemeCategory10);
+/* harmony export (immutable) */ __webpack_exports__["a"] = color;
+
+const color2 = d3.scaleOrdinal(d3.schemeCategory10);
+/* harmony export (immutable) */ __webpack_exports__["b"] = color2;
+
+
+const makeSvg = (className, rootId, obj, h, w) => {
+  return d3
+    .select(rootId)
+    .append("svg")
+    .attr("height", h + obj.left + obj.right + 50)
+    .attr("width", w)
+    .attr("class", className);
+};
+/* harmony export (immutable) */ __webpack_exports__["d"] = makeSvg;
+
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const cleanerData = data => {
+  let finalData = [];
+  let obj = data["Time Series (Daily)"];
+  let lastSevenDates = Object.keys(obj).sort().slice(-7);
+  lastSevenDates.forEach((date) => {
+    finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
+  });
+  return finalData;
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = cleanerData;
+
+
+
+const singleStock = array => {
+  return array.map((obj) => {
+    return { date: obj["date"].slice(5), close: obj["4. close"], ticker: obj["ticker"]};
+  });
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;
+
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_d3_methods_js__ = __webpack_require__(1);
 
 
 const hideModal = () => {
@@ -520,33 +579,6 @@ const changePage = (stockData, ticker) => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const cleanerData = data => {
-  let finalData = [];
-  let obj = data["Time Series (Daily)"];
-  let lastSevenDates = Object.keys(obj).sort().slice(-7);
-  lastSevenDates.forEach((date) => {
-    finalData.push(Object.assign({}, obj[date], {date}, {ticker: data["Meta Data"]["2. Symbol"]}));
-  });
-  return finalData;
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = cleanerData;
-
-
-
-const singleStock = array => {
-  return array.map((obj) => {
-    return { date: obj["date"].slice(5), close: obj["4. close"], ticker: obj["ticker"]};
-  });
-};
-/* harmony export (immutable) */ __webpack_exports__["b"] = singleStock;
-
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 const fetchStock = async ticker => {
   let data = await (await fetch(
     `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker.toUpperCase()}&apikey=0FYYBJVW8H7H8BCY`
@@ -554,40 +586,6 @@ const fetchStock = async ticker => {
   return data;
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = fetchStock;
-
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const margin = { top: 30, bottom: 50, left: 50, right: 10 };
-/* harmony export (immutable) */ __webpack_exports__["e"] = margin;
-
-
-const width = 700 - margin.right - margin.left;
-/* harmony export (immutable) */ __webpack_exports__["f"] = width;
-
-const height = 500 - margin.top - margin.bottom;
-/* harmony export (immutable) */ __webpack_exports__["c"] = height;
-
-const color = d3.scaleOrdinal(d3.schemeCategory10);
-/* harmony export (immutable) */ __webpack_exports__["a"] = color;
-
-const color2 = d3.scaleOrdinal(d3.schemeCategory10);
-/* harmony export (immutable) */ __webpack_exports__["b"] = color2;
-
-
-const makeSvg = (className, rootId, obj, h, w) => {
-  return d3
-    .select(rootId)
-    .append("svg")
-    .attr("height", h + obj.left + obj.right + 50)
-    .attr("width", w)
-    .attr("class", className);
-};
-/* harmony export (immutable) */ __webpack_exports__["d"] = makeSvg;
 
 
 
