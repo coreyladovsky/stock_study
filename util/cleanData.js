@@ -1,5 +1,5 @@
 export const cleanerData = data => {
-  console.log(data)
+  // debugger
   let finalData = [];
   let obj = data["Time Series (Daily)"];
   let lastSevenDates = Object.keys(obj).sort().slice(-7);

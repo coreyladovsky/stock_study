@@ -4,20 +4,18 @@ import { fetchStock } from "./util/fetch.js";
 import { makeSvg, margin, width, height, color } from "./util/d3_methods.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("hello")
   defaultStocks();
 });
 
-const defaultStocks = () =>
-console.log("hello")
-  let defaults = ["CHFS", "SLS", "NFEC", "MRNS", "NOG"];
+const defaultStocks = () => {
+  let defaults = ["CHFS", "SPI", "DF", "MRNS", "NOG"];
   // let promises = [];
   // for (let i = 0; i < defaults.length; i++) {
   //   promises.push(fetchStock(defaults[i]));
   // }
-  console.log(promises)
+  // console.log(promises)
   Promise.all(defaults.map(fetchStock)).then(results => {
-    console.log(results)
+    // debugger
     var stockData = results.map(res => {
       return cleanerData(res);
     });
@@ -189,9 +187,7 @@ console.log("hello")
       let data = singleStock(stockData[i]);
       makePath(stockData, g, i, data);
     }
-  }).catch(err => {
-    console.log(err)
-  })
+  });
 };
 
 const makeG = svg => {
